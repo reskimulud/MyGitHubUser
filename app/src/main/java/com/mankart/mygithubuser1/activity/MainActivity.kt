@@ -1,5 +1,6 @@
 package com.mankart.mygithubuser1.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -8,10 +9,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mankart.mygithubuser1.adapter.ListUserAdapter
 import com.mankart.mygithubuser1.R
+import com.mankart.mygithubuser1.databinding.ActivityMainBinding
 import com.mankart.mygithubuser1.model.UsersModel
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
     private lateinit var rvUser: RecyclerView
     private var list: ArrayList<UsersModel> = arrayListOf()
 
@@ -19,13 +22,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        rvUser = findViewById(R.id.rv_users)
+        rvUser = binding.rvUsers
         rvUser.setHasFixedSize(true)
 
         dataUsers()
         Log.d("MainActivity", list.toString())
         showRecycleList()
+
+        supportActionBar?.hide()
     }
 
     private fun showRecycleList() {
@@ -35,7 +42,10 @@ class MainActivity : AppCompatActivity() {
 
         listUserAdapter.setOnItemClickCallback(object: ListUserAdapter.OnItemClickCallback {
             override fun onItemClicked(data: UsersModel) {
-                Toast.makeText(this@MainActivity, data.name, Toast.LENGTH_SHORT).show()
+                // Toast.makeText(this@MainActivity, data.name, Toast.LENGTH_SHORT).show()
+                val moveIntent = Intent(this@MainActivity, DetailUserActivity::class.java)
+                moveIntent.putExtra(DetailUserActivity.PUT_EXTRA, data)
+                startActivity(moveIntent)
             }
         })
     }
