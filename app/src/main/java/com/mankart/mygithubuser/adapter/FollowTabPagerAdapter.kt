@@ -1,10 +1,10 @@
 package com.mankart.mygithubuser.adapter
 
+import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.mankart.mygithubuser.fragment.FollowerFragment
-import com.mankart.mygithubuser.fragment.FollowingFragment
 
 class FollowTabPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
     override fun getItemCount(): Int {
@@ -12,12 +12,11 @@ class FollowTabPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(
     }
 
     override fun createFragment(position: Int): Fragment {
-        var fragment: Fragment? = null
-        when(position) {
-            0 -> fragment = FollowerFragment()
-            1 -> fragment = FollowingFragment()
+        var fragment = FollowerFragment()
+        fragment.arguments = Bundle().apply {
+            putInt(FollowerFragment.ARG_SECTION_NUMBER, position + 1)
         }
-        return fragment as Fragment
+        return fragment
     }
 
 }
