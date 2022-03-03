@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var rvUser: RecyclerView
-    private var list: ArrayList<UsersModel> = arrayListOf()
+    private val list: ArrayList<UsersModel> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity() {
 
         listUserAdapter.setOnItemClickCallback(object: ListUserAdapter.OnItemClickCallback {
             override fun onItemClicked(data: UsersModel) {
-                // Toast.makeText(this@MainActivity, data.name, Toast.LENGTH_SHORT).show()
                 val moveIntent = Intent(this@MainActivity, DetailUserActivity::class.java)
                 moveIntent.putExtra(DetailUserActivity.PUT_EXTRA, data)
                 startActivity(moveIntent)
