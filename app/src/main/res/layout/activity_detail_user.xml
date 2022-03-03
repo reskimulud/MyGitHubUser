@@ -45,18 +45,18 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"
-        android:layout_below="@+id/topbar">
+        android:layout_below="@+id/topbar"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/rounded_corner"
             android:orientation="vertical"
             android:paddingLeft="20dp"
             android:paddingTop="10dp"
-            android:paddingRight="20dp"
-            android:background="@drawable/rounded_corner"
-            android:layout_marginHorizontal="20dp">
+            android:paddingRight="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -68,16 +68,17 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/img_avatar"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_marginTop="20dp"
-                    tools:src="@tools:sample/avatars"/>
+                    tools:src="@tools:sample/avatars" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/tv_name_detail"
                         android:layout_width="wrap_content"
@@ -85,7 +86,7 @@
                         android:layout_marginTop="10dp"
                         android:text="@string/name"
                         android:textColor="@color/white"
-                        android:textSize="22sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -94,7 +95,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/username"
                         android:textColor="@color/secondaryLightColor"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
 
                 </LinearLayout>
@@ -112,8 +113,8 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tv_repo"
@@ -121,18 +122,18 @@
                         android:layout_height="0dp"
                         android:layout_weight="2"
                         android:gravity="center"
-                        tools:text="10k"
                         android:textAllCaps="true"
-                        android:textSize="20sp"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="@color/white"/>
+                        tools:text="10k" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/repository"
                         android:layout_gravity="center"
-                        android:textColor="@color/secondaryLightColor"/>
+                        android:text="@string/repository"
+                        android:textColor="@color/secondaryLightColor" />
 
                 </LinearLayout>
 
@@ -143,8 +144,8 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tv_followers"
@@ -152,18 +153,18 @@
                         android:layout_height="0dp"
                         android:layout_weight="2"
                         android:gravity="center"
-                        android:text="10k"
                         android:textAllCaps="true"
-                        android:textSize="20sp"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="@color/white"/>
+                        tools:text="10k" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/followers"
                         android:layout_gravity="center"
-                        android:textColor="@color/secondaryLightColor"/>
+                        android:text="@string/followers"
+                        android:textColor="@color/secondaryLightColor" />
 
                 </LinearLayout>
 
@@ -174,8 +175,8 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tv_following"
@@ -185,16 +186,16 @@
                         android:gravity="center"
                         android:text="10k"
                         android:textAllCaps="true"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/following"
                         android:layout_gravity="center"
-                        android:textColor="@color/secondaryLightColor"/>
+                        android:text="@string/following"
+                        android:textColor="@color/secondaryLightColor" />
 
                 </LinearLayout>
 
@@ -207,21 +208,21 @@
                 android:layout_marginTop="20dp">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:src="@drawable/company_icon" />
 
                 <TextView
                     android:id="@+id/tv_company"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/company"
                     android:layout_gravity="center"
                     android:layout_marginStart="10dp"
-                    android:textSize="16sp"
-                    android:textColor="@color/white"
+                    android:ellipsize="end"
                     android:lines="1"
-                    android:ellipsize="end"/>
+                    android:text="@string/company"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -232,26 +233,36 @@
                 android:layout_marginBottom="20dp">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:src="@drawable/location_icon" />
 
                 <TextView
                     android:id="@+id/tv_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/location"
                     android:layout_gravity="center"
                     android:layout_marginStart="10dp"
-                    android:textSize="16sp"
-                    android:textColor="@color/white"
+                    android:ellipsize="end"
                     android:lines="1"
-                    android:ellipsize="end"/>
+                    android:text="@string/location"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
         </LinearLayout>
 
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            app:tabTextColor="@android:color/white"/>
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </ScrollView>
 
