@@ -8,19 +8,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.mankart.mygithubuser.R
-import com.mankart.mygithubuser.model.UsersModel
+import com.mankart.mygithubuser.model.UserModel
 import de.hdodenhof.circleimageview.CircleImageView
 
-class ListUserAdapter(private var listUser : ArrayList<UsersModel>) : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
+class ListUserAdapter(private var listUser : ArrayList<UserModel>) : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
     private lateinit var onClickCallback: OnItemClickCallback
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: UsersModel)
+        fun onItemClicked(data: UserModel)
     }
 
     inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tvUsername : TextView = itemView.findViewById(R.id.tv_username)
-        var tvName : TextView = itemView.findViewById(R.id.tv_name)
         var imgAvatar : CircleImageView = itemView.findViewById(R.id.img_avatar)
     }
 
@@ -33,22 +32,28 @@ class ListUserAdapter(private var listUser : ArrayList<UsersModel>) : RecyclerVi
         val user = listUser[position]
 
         Glide.with(holder.itemView.context)
-            .load(user.avatar)
+            .load(user.avatarUrl)
             .apply(RequestOptions().override(400, 400))
             .into(holder.imgAvatar)
-        holder.tvUsername.text = user.username
-        holder.tvName.text = user.name
+        holder.tvUsername.text = user.login
 
         holder.itemView.setOnClickListener { this.onClickCallback.onItemClicked(listUser[holder.adapterPosition]) }
     }
 
-    override fun getItemCount(): Int {
-        return listUser.size
-    }
+    override fun getItemCount(): Int = listUser.size
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onClickCallback = onItemClickCallback
     }
 
+    fun clearData() {
+        listUser.clear()
+        notifyDataSetChanged()
+    }
 
+    fun setData(newList: ArrayList<UserModel>) {
+        listUser.clear()
+        listUser.addAll(newList)
+        notifyDataSetChanged()
+    }
 }

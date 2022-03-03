@@ -11,7 +11,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.mankart.mygithubuser.R
 import com.mankart.mygithubuser.adapter.FollowTabPagerAdapter
 import com.mankart.mygithubuser.databinding.ActivityDetailUserBinding
-import com.mankart.mygithubuser.model.UsersModel
+import com.mankart.mygithubuser.model.UserModel
 import java.text.DecimalFormat
 
 class DetailUserActivity : AppCompatActivity() {
@@ -35,17 +35,17 @@ class DetailUserActivity : AppCompatActivity() {
         binding = ActivityDetailUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val data = intent.getParcelableExtra<UsersModel>(PUT_EXTRA) as UsersModel
+        val data = intent.getParcelableExtra<UserModel>(PUT_EXTRA) as UserModel
 
         binding.tvNameDetail.text = data.name
-        binding.tvUsernameDetail.text = data.username
+        binding.tvUsernameDetail.text = data.login
         Glide.with(this)
-            .load(data.avatar)
+            .load(data.avatarUrl)
             .apply(RequestOptions().override(400, 400))
             .into(binding.imgAvatar)
-        binding.tvRepo.text = getDecimal(data.repository)
-        binding.tvFollowers.text = getDecimal(data.follower)
-        binding.tvFollowing.text = getDecimal(data.following)
+        binding.tvRepo.text = data.publicRepos?.let { getDecimal(it) }
+        binding.tvFollowers.text = data.followers?.let { getDecimal(it) }
+        binding.tvFollowing.text = data.following?.let { getDecimal(it) }
         binding.tvCompany.text = data.company
         binding.tvLocation.text = data.location
 

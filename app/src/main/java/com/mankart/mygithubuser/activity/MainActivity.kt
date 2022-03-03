@@ -7,20 +7,30 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.View
 import androidx.appcompat.widget.SearchView
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mankart.mygithubuser.adapter.ListUserAdapter
 import com.mankart.mygithubuser.R
 import com.mankart.mygithubuser.databinding.ActivityMainBinding
-import com.mankart.mygithubuser.model.UsersModel
+import com.mankart.mygithubuser.model.UserModel
+import com.mankart.mygithubuser.model.UsersListModel
+import com.mankart.mygithubuser.services.ApiConfig
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var rvUser: RecyclerView
-    private val list: ArrayList<UsersModel> = arrayListOf()
+    private lateinit var listUserAdapter: ListUserAdapter
+    private var list: ArrayList<UserModel> = arrayListOf()
+
+    companion object {
+        const val TAG = "Main Activity"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         rvUser.setHasFixedSize(true)
 
         dataUsers()
-        Log.d("MainActivity", list.toString())
+        Log.e("MainActivity", list.toString())
         showRecycleList()
 
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -42,11 +52,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun showRecycleList() {
         rvUser.layoutManager = LinearLayoutManager(this)
-        val listUserAdapter = ListUserAdapter(list)
+        listUserAdapter = ListUserAdapter(list)
         rvUser.adapter = listUserAdapter
 
         listUserAdapter.setOnItemClickCallback(object: ListUserAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: UsersModel) {
+            override fun onItemClicked(data: UserModel) {
                 val moveIntent = Intent(this@MainActivity, DetailUserActivity::class.java)
                 moveIntent.putExtra(DetailUserActivity.PUT_EXTRA, data)
                 startActivity(moveIntent)
@@ -69,7 +79,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
-                Toast.makeText(this@MainActivity, query, Toast.LENGTH_SHORT).show()
+                listUserAdapter.clearData()
+                searchUserByQuery(query)
                 searchView.clearFocus()
                 return true
             }
@@ -78,149 +89,50 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    private fun searchUserByQuery(query: String) {
+        showLoading(true)
+        val client = ApiConfig.getApiService().searchUser(query)
+        client.enqueue(object : Callback<UsersListModel> {
+            override fun onResponse(call: Call<UsersListModel>, response: Response<UsersListModel>) {
+                showLoading(false)
+                if (response.isSuccessful) {
+
+                    val responseBody = response.body()?.items
+                    if (responseBody != null) {
+                        listUserAdapter.setData(responseBody)
+                        Log.e(TAG, "ini isi list nih : $list")
+                    }
+                } else {
+                    Log.e(TAG, "onFailure: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<UsersListModel>, t: Throwable) {
+                showLoading(false)
+                Log.e(TAG, "onFailure : ${t.message}")
+            }
+        })
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
+    }
+
     private fun dataUsers() {
         list.add(
-            UsersModel(
-                "reski-mulud-muchamad",
+            UserModel(
+                0,
+                "https://avatars.githubusercontent.com/u/63949402?v=4",
+                0,
                 "Reski Mulud Muchamad",
-                R.drawable.user11,
-                "Muhammadiyah University of Sukabumi",
-                "Kp. Selajambu, RT 04/01, Des. Sasagaran, Kec. Kebonpedes",
-                30,
-                7,
-                40
-            )
-        )
-        list.add(
-            UsersModel(
-                "sandhikagalih",
-                "Sandhika Galih",
-                R.drawable.user12,
-                "Pasundan University Bandung",
-                "Indonesia",
-                37,
-                5717,
-                4
-            )
-        )
-        list.add(
-            UsersModel(
-                "JakeWharton",
-                "Jake Wharton",
-                R.drawable.user1,
-                "Google, Inc.",
-                "Pittsburgh, PA, USA",
-                102,
-                56995,
-                12
-            )
-        )
-        list.add(
-            UsersModel(
-                "amitshekhariitbhu",
-                "Amit Shekar",
-                R.drawable.user2,
-                "@MindOrksOpenSource",
-                "New Delhi, India",
-                37,
-                5153,
-                2
-            )
-        )
-        list.add(
-            UsersModel(
-                "romainguy",
-                "Romain Guy",
-                R.drawable.user3,
-                "Google",
-                "California",
-                9,
-                7972,
-                0
-            )
-        )
-        list.add(
-            UsersModel(
-                "chrisbanes",
-                "Chris Banes",
-                R.drawable.user4,
-                "@google working on @android",
-                "Sydney, Australia",
-                30,
-                14725,
-                1
-            )
-        )
-        list.add(
-            UsersModel(
-                "tipsy",
-                "David",
-                R.drawable.user5,
-                "Working Group Two",
-                "Trondheim, Norway",
-                56,
-                788,
-                0
-            )
-        )
-        list.add(
-            UsersModel(
-                "ravi8x",
-                "Ravi Tamada",
-                R.drawable.user6,
-                "Android Hive |  Droid5",
-                "India",
-                28,
-                18628,
-                3
-            )
-        )
-        list.add(
-            UsersModel(
-                "jasoet",
-                "Deny Prasetyo",
-                R.drawable.user7,
-                "@gojek-engineering",
-                "Kota Gede, Yogyakarta, Indonesia",
-                44,
-                277,
-                39
-            )
-        )
-        list.add(
-            UsersModel(
-                "budioktaviyan",
-                "Budi Oktaviyan",
-                R.drawable.user8,
-                "@KotlinId",
-                "Jakarta, Indonesia",
-                110,
-                178,
-                23
-            )
-        )
-        list.add(
-            UsersModel(
-                "hendisantika",
-                "Hendi Santika",
-                R.drawable.user9,
-                "@JVMDeveloperID @KotlinId",
-                "Bojongsoang - Bandung Jawa Barat",
-                1064,
-                428,
-                61
-            )
-        )
-        list.add(
-            UsersModel(
-                "sidiqpermana",
-                "Sidiq Permana",
-                R.drawable.user10,
-                "Nusantara Beta Studio",
-                "Jakarta, Indonesia",
-                65,
-                465,
-                10
+                "UMMI",
+                "Sukabumi",
+                40,
+                "reskimlud"
             )
         )
     }
