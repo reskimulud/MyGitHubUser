@@ -1,12 +1,12 @@
-package com.mankart.mygithubuser1.activity
+package com.mankart.mygithubuser.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.mankart.mygithubuser1.R
-import com.mankart.mygithubuser1.databinding.ActivityDetailUserBinding
-import com.mankart.mygithubuser1.model.UsersModel
+import com.mankart.mygithubuser.R
+import com.mankart.mygithubuser.databinding.ActivityDetailUserBinding
+import com.mankart.mygithubuser.model.UsersModel
 import java.text.DecimalFormat
 
 class DetailUserActivity : AppCompatActivity() {

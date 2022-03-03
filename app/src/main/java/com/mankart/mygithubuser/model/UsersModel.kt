@@ -1,4 +1,4 @@
-package com.mankart.mygithubuser1.model
+package com.mankart.mygithubuser.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

@@ -1,4 +1,4 @@
-package com.mankart.mygithubuser1.adapter
+package com.mankart.mygithubuser.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.mankart.mygithubuser1.R
-import com.mankart.mygithubuser1.model.UsersModel
+import com.mankart.mygithubuser.R
+import com.mankart.mygithubuser.model.UsersModel
 import de.hdodenhof.circleimageview.CircleImageView
 
 class ListUserAdapter(private var listUser : ArrayList<UsersModel>) : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {

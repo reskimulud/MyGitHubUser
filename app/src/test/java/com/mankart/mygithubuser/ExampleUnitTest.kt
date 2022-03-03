@@ -1,4 +1,4 @@
-package com.mankart.mygithubuser1
+package com.mankart.mygithubuser
 
 import org.junit.Test
 

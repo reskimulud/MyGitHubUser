@@ -1,16 +1,15 @@
-package com.mankart.mygithubuser1.activity
+package com.mankart.mygithubuser.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.mankart.mygithubuser1.adapter.ListUserAdapter
-import com.mankart.mygithubuser1.R
-import com.mankart.mygithubuser1.databinding.ActivityMainBinding
-import com.mankart.mygithubuser1.model.UsersModel
+import com.mankart.mygithubuser.adapter.ListUserAdapter
+import com.mankart.mygithubuser.R
+import com.mankart.mygithubuser.databinding.ActivityMainBinding
+import com.mankart.mygithubuser.model.UsersModel
 
 class MainActivity : AppCompatActivity() {
 
