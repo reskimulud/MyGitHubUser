@@ -8,4 +8,6 @@
     <string name="following">Following</string>
     <string name="location">location</string>
     <string name="company">company</string>
+    <string name="search">Search</string>
+    <string name="search_hint">Masukkan kata</string>
 </resources>
