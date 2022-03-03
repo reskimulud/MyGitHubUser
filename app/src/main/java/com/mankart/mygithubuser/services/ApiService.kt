@@ -6,6 +6,7 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface ApiService {
+    @Headers("Authorization: token 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")
     @GET("users/{username}")
     fun getUser(
         @Path("username") username: String
