@@ -15,7 +15,7 @@ class ListUserAdapter(private var listUser : ArrayList<UserModel>) : RecyclerVie
     private lateinit var onClickCallback: OnItemClickCallback
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: UserModel)
+        fun onItemClicked(username: String?)
     }
 
     inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -37,7 +37,7 @@ class ListUserAdapter(private var listUser : ArrayList<UserModel>) : RecyclerVie
             .into(holder.imgAvatar)
         holder.tvUsername.text = user.login
 
-        holder.itemView.setOnClickListener { this.onClickCallback.onItemClicked(listUser[holder.adapterPosition]) }
+        holder.itemView.setOnClickListener { this.onClickCallback.onItemClicked(listUser[holder.adapterPosition].login) }
     }
 
     override fun getItemCount(): Int = listUser.size

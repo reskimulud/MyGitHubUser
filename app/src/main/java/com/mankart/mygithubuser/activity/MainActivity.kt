@@ -56,10 +56,29 @@ class MainActivity : AppCompatActivity() {
         rvUser.adapter = listUserAdapter
 
         listUserAdapter.setOnItemClickCallback(object: ListUserAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: UserModel) {
-                val moveIntent = Intent(this@MainActivity, DetailUserActivity::class.java)
-                moveIntent.putExtra(DetailUserActivity.PUT_EXTRA, data)
-                startActivity(moveIntent)
+            override fun onItemClicked(username: String?) {
+                showLoading(true)
+                val detailUser = username?.let { ApiConfig.getApiService().getUser(it) }
+                detailUser?.enqueue(object : Callback<UserModel> {
+                    override fun onResponse(call: Call<UserModel>, response: Response<UserModel>) {
+                        showLoading(false)
+                        if (response.isSuccessful) {
+                            val responseBody = response.body()
+                            if (responseBody != null) {
+                                val moveIntent = Intent(this@MainActivity, DetailUserActivity::class.java)
+                                moveIntent.putExtra(DetailUserActivity.PUT_EXTRA, responseBody)
+                                startActivity(moveIntent)
+                            }
+                        } else {
+                            Log.e(TAG, "onFailure: ${response.message()}")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<UserModel>, t: Throwable) {
+                        Log.e(TAG, "onFailure: ${t.message}")
+                    }
+
+                })
             }
         })
     }
@@ -96,7 +115,6 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<UsersListModel>, response: Response<UsersListModel>) {
                 showLoading(false)
                 if (response.isSuccessful) {
-
                     val responseBody = response.body()?.items
                     if (responseBody != null) {
                         listUserAdapter.setData(responseBody)
