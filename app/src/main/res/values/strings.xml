@@ -10,6 +10,7 @@
     <string name="company">company</string>
     <string name="search">Search</string>
     <string name="search_hint">Masukkan kata</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="content_tab_follower">Follower</string>
+    <string name="content_tab_following">Following</string>
 </resources>
