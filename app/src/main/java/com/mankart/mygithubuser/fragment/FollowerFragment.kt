@@ -7,16 +7,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mankart.mygithubuser.R
 import com.mankart.mygithubuser.activity.DetailUserActivity
 import com.mankart.mygithubuser.activity.MainActivity
 import com.mankart.mygithubuser.adapter.ListUserAdapter
 import com.mankart.mygithubuser.databinding.FragmentFollowerBinding
 import com.mankart.mygithubuser.model.UserModel
-import com.mankart.mygithubuser.model.UsersListModel
 import com.mankart.mygithubuser.services.ApiConfig
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,7 +25,7 @@ class FollowerFragment : Fragment() {
     private lateinit var listUserAdapter: ListUserAdapter
 
     companion object {
-        val TABS = listOf<String>("followers", "following")
+        val TABS = listOf("followers", "following")
         const val ARG_SECTION_NUMBER ="tab_number"
         const val USERNAME = "username"
     }

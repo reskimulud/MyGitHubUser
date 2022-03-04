@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,7 @@ import com.mankart.mygithubuser.databinding.ActivityMainBinding
 import com.mankart.mygithubuser.model.UserModel
 import com.mankart.mygithubuser.model.UsersListModel
 import com.mankart.mygithubuser.services.ApiConfig
+import com.mankart.mygithubuser.viewmodel.UserViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var rvUser: RecyclerView
     private lateinit var listUserAdapter: ListUserAdapter
     private var list: ArrayList<UserModel> = arrayListOf()
+    private val userViewModel: UserViewModel by viewModels()
 
     companion object {
         const val TAG = "Main Activity"
@@ -43,12 +46,28 @@ class MainActivity : AppCompatActivity() {
         rvUser = binding.rvUsers
         rvUser.setHasFixedSize(true)
 
-        dataUsers()
-        Log.e("MainActivity", list.toString())
+        initObserver()
         showRecycleList()
 
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setIcon(R.mipmap.ic_launcher_foreground)
+    }
+
+    private fun initObserver() {
+        userViewModel.listUser.observe(this) {
+            listUserAdapter.setData(it)
+        }
+        userViewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
+        userViewModel.messageToast.observe(this) {
+            showToast(it)
+        }
+        userViewModel.user.observe(this) {
+            val moveIntent = Intent(this@MainActivity, DetailUserActivity::class.java)
+            moveIntent.putExtra(DetailUserActivity.PUT_EXTRA, it)
+            startActivity(moveIntent)
+        }
     }
 
     private fun showRecycleList() {
@@ -58,30 +77,7 @@ class MainActivity : AppCompatActivity() {
 
         listUserAdapter.setOnItemClickCallback(object: ListUserAdapter.OnItemClickCallback {
             override fun onItemClicked(username: String?) {
-                showLoading(true)
-                val detailUser = username?.let { ApiConfig.getApiService().getUser(it) }
-                detailUser?.enqueue(object : Callback<UserModel> {
-                    override fun onResponse(call: Call<UserModel>, response: Response<UserModel>) {
-                        showLoading(false)
-                        if (response.isSuccessful) {
-                            val responseBody = response.body()
-                            if (responseBody != null) {
-                                val moveIntent = Intent(this@MainActivity, DetailUserActivity::class.java)
-                                moveIntent.putExtra(DetailUserActivity.PUT_EXTRA, responseBody)
-                                startActivity(moveIntent)
-                            }
-                        } else {
-                            showToast(response.message())
-                            Log.e(TAG, "onFailure: ${response.message()}")
-                        }
-                    }
-
-                    override fun onFailure(call: Call<UserModel>, t: Throwable) {
-                        showToast(t.message.toString())
-                        Log.e(TAG, "onFailure: ${t.message}")
-                    }
-
-                })
+                userViewModel.searchUserByUsername(username)
             }
         })
     }
@@ -102,42 +98,13 @@ class MainActivity : AppCompatActivity() {
 
             override fun onQueryTextSubmit(query: String): Boolean {
                 listUserAdapter.clearData()
-                searchUserByQuery(query)
+                userViewModel.searchUserByQuery(query)
                 searchView.clearFocus()
                 return true
             }
         })
 
         return true
-    }
-
-    private fun searchUserByQuery(query: String) {
-        showLoading(true)
-        val client = ApiConfig.getApiService().searchUser(query)
-        client.enqueue(object : Callback<UsersListModel> {
-            override fun onResponse(call: Call<UsersListModel>, response: Response<UsersListModel>) {
-                showLoading(false)
-                if (response.isSuccessful) {
-                    val responseBody = response.body()?.items
-                    if (responseBody != null && responseBody.size > 0) {
-                        listUserAdapter.setData(responseBody)
-                        Log.e(TAG, "ini isi list nih : $list")
-                    } else {
-                        showToast("No users were found matching the query")
-
-                    }
-                } else {
-                    showToast(response.message())
-                    Log.e(TAG, "onFailure: ${response.message()}")
-                }
-            }
-
-            override fun onFailure(call: Call<UsersListModel>, t: Throwable) {
-                showLoading(false)
-                showToast(t.message.toString())
-                Log.e(TAG, "onFailure : ${t.message}")
-            }
-        })
     }
 
     private fun showLoading(isLoading: Boolean) {
