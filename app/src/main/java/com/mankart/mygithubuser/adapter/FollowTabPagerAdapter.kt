@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.mankart.mygithubuser.fragment.FollowerFragment
 
-class FollowTabPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
+class FollowTabPagerAdapter(activity: AppCompatActivity, private val username: String) : FragmentStateAdapter(activity) {
     override fun getItemCount(): Int {
         return 2
     }
@@ -14,9 +14,9 @@ class FollowTabPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(
     override fun createFragment(position: Int): Fragment {
         var fragment = FollowerFragment()
         fragment.arguments = Bundle().apply {
-            putInt(FollowerFragment.ARG_SECTION_NUMBER, position + 1)
+            putInt(FollowerFragment.ARG_SECTION_NUMBER, position)
+            putString(FollowerFragment.USERNAME, username)
         }
         return fragment
     }
-
 }

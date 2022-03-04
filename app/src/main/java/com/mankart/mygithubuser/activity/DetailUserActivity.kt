@@ -49,7 +49,7 @@ class DetailUserActivity : AppCompatActivity() {
         binding.tvCompany.text = data.company
         binding.tvLocation.text = data.location
 
-        val followTabPagerAdapter = FollowTabPagerAdapter(this)
+        val followTabPagerAdapter = data.login?.let { FollowTabPagerAdapter(this, it) }
         val viewPager: ViewPager2 = binding.viewPager
         viewPager.adapter = followTabPagerAdapter
         val tabs: TabLayout = binding.tabs

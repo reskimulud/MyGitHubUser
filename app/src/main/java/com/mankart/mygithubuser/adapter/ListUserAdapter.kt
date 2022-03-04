@@ -11,7 +11,8 @@ import com.mankart.mygithubuser.R
 import com.mankart.mygithubuser.model.UserModel
 import de.hdodenhof.circleimageview.CircleImageView
 
-class ListUserAdapter(private var listUser : ArrayList<UserModel>) : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
+class ListUserAdapter: RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
+    private var listUser = ArrayList<UserModel>()
     private lateinit var onClickCallback: OnItemClickCallback
 
     interface OnItemClickCallback {

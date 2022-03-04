@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showRecycleList() {
         rvUser.layoutManager = LinearLayoutManager(this)
-        listUserAdapter = ListUserAdapter(list)
+        listUserAdapter = ListUserAdapter()
         rvUser.adapter = listUserAdapter
 
         listUserAdapter.setOnItemClickCallback(object: ListUserAdapter.OnItemClickCallback {
