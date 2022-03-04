@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -70,11 +71,13 @@ class MainActivity : AppCompatActivity() {
                                 startActivity(moveIntent)
                             }
                         } else {
+                            showToast(response.message())
                             Log.e(TAG, "onFailure: ${response.message()}")
                         }
                     }
 
                     override fun onFailure(call: Call<UserModel>, t: Throwable) {
+                        showToast(t.message.toString())
                         Log.e(TAG, "onFailure: ${t.message}")
                     }
 
@@ -116,17 +119,22 @@ class MainActivity : AppCompatActivity() {
                 showLoading(false)
                 if (response.isSuccessful) {
                     val responseBody = response.body()?.items
-                    if (responseBody != null) {
+                    if (responseBody != null && responseBody.size > 0) {
                         listUserAdapter.setData(responseBody)
                         Log.e(TAG, "ini isi list nih : $list")
+                    } else {
+                        showToast("No users were found matching the query")
+
                     }
                 } else {
+                    showToast(response.message())
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<UsersListModel>, t: Throwable) {
                 showLoading(false)
+                showToast(t.message.toString())
                 Log.e(TAG, "onFailure : ${t.message}")
             }
         })
@@ -138,6 +146,10 @@ class MainActivity : AppCompatActivity() {
         } else {
             binding.progressBar.visibility = View.GONE
         }
+    }
+
+    private fun showToast(message: String, long: Boolean = true) {
+        Toast.makeText(this@MainActivity, message, if (long) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
     }
 
     private fun dataUsers() {
