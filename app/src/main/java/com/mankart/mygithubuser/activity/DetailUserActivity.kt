@@ -68,7 +68,7 @@ class DetailUserActivity : AppCompatActivity() {
 
     private fun getDecimal(n: Int) : String {
         val suffix = charArrayOf(' ', 'k', 'M', 'B', 'T', 'P', 'E')
-        val countNum: Long = n.toLong() ?: 0
+        val countNum: Long = n.toLong()
         val sum = floor(log10(countNum.toDouble())).toInt()
         val base = sum / 3
         return if (sum >= 3 && base < suffix.size) {

@@ -1,5 +1,6 @@
 package com.mankart.mygithubuser.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,11 +48,13 @@ class ListUserAdapter: RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
         this.onClickCallback = onItemClickCallback
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun clearData() {
         listUser.clear()
         notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setData(newList: ArrayList<UserModel>) {
         listUser.clear()
         listUser.addAll(newList)

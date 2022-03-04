@@ -12,7 +12,7 @@ class FollowTabPagerAdapter(activity: AppCompatActivity, private val username: S
     }
 
     override fun createFragment(position: Int): Fragment {
-        var fragment = FollowerFragment()
+        val fragment = FollowerFragment()
         fragment.arguments = Bundle().apply {
             putInt(FollowerFragment.ARG_SECTION_NUMBER, position)
             putString(FollowerFragment.USERNAME, username)
