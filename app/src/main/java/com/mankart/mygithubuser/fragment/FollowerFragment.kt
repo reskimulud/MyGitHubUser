@@ -8,13 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mankart.mygithubuser.activity.DetailUserActivity
-import com.mankart.mygithubuser.activity.MainActivity
 import com.mankart.mygithubuser.adapter.ListUserAdapter
 import com.mankart.mygithubuser.databinding.FragmentFollowerBinding
 import com.mankart.mygithubuser.model.UserModel
 import com.mankart.mygithubuser.services.ApiConfig
+import com.mankart.mygithubuser.viewmodel.UserViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -23,6 +24,7 @@ import retrofit2.Response
 class FollowerFragment : Fragment() {
     private lateinit var binding: FragmentFollowerBinding
     private lateinit var listUserAdapter: ListUserAdapter
+    private val userViewModel: UserViewModel by activityViewModels()
 
     companion object {
         val TABS = listOf("followers", "following")
@@ -33,7 +35,7 @@ class FollowerFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentFollowerBinding.inflate(layoutInflater)
         // Inflate the layout for this fragment
         return binding.root
@@ -45,8 +47,24 @@ class FollowerFragment : Fragment() {
         val tab = TABS[arguments?.getInt(ARG_SECTION_NUMBER, 0)!!.toInt()]
         val username = arguments?.getString(USERNAME)
 
+        initObserver()
+
         getUserFollow(tab, username)
         showRecycleList()
+    }
+
+    private fun initObserver() {
+        userViewModel.user.observe(viewLifecycleOwner) {
+            val moveIntent = Intent(context, DetailUserActivity::class.java)
+            moveIntent.putExtra(DetailUserActivity.PUT_EXTRA, it)
+            startActivity(moveIntent)
+        }
+        userViewModel.isLoading.observe(viewLifecycleOwner) {
+            showLoading(it)
+        }
+        userViewModel.messageToast.observe(viewLifecycleOwner) {
+            showToast(it)
+        }
     }
 
     private fun getUserFollow(tab: String, username: String?) {
@@ -83,30 +101,7 @@ class FollowerFragment : Fragment() {
 
         listUserAdapter.setOnItemClickCallback(object: ListUserAdapter.OnItemClickCallback {
             override fun onItemClicked(username: String?) {
-                showLoading(true)
-                val detailUser = username?.let { ApiConfig.getApiService().getUser(it) }
-                detailUser?.enqueue(object : Callback<UserModel> {
-                    override fun onResponse(call: Call<UserModel>, response: Response<UserModel>) {
-                        showLoading(false)
-                        if (response.isSuccessful) {
-                            val responseBody = response.body()
-                            if (responseBody != null) {
-                                val moveIntent = Intent(activity, DetailUserActivity::class.java)
-                                moveIntent.putExtra(DetailUserActivity.PUT_EXTRA, responseBody)
-                                startActivity(moveIntent)
-                            }
-                        } else {
-                            showToast(response.message())
-                            Log.e(MainActivity.TAG, "onFailure: ${response.message()}")
-                        }
-                    }
-
-                    override fun onFailure(call: Call<UserModel>, t: Throwable) {
-                        showToast(t.message.toString())
-                        Log.e(MainActivity.TAG, "onFailure: ${t.message}")
-                    }
-
-                })
+                userViewModel.getUserByUsername(username)
             }
 
         })

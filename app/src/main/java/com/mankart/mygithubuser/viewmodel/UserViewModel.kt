@@ -55,7 +55,7 @@ class UserViewModel: ViewModel() {
         })
     }
 
-    fun searchUserByUsername(username: String?) {
+    fun getUserByUsername(username: String?) {
         _isLoading.value = true
         val detailUser = username?.let { ApiConfig.getApiService().getUser(it) }
         detailUser?.enqueue(object: Callback<UserModel> {

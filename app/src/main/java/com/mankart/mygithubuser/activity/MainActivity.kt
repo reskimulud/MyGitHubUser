@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.Toast
@@ -16,25 +15,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mankart.mygithubuser.adapter.ListUserAdapter
 import com.mankart.mygithubuser.R
 import com.mankart.mygithubuser.databinding.ActivityMainBinding
-import com.mankart.mygithubuser.model.UserModel
-import com.mankart.mygithubuser.model.UsersListModel
-import com.mankart.mygithubuser.services.ApiConfig
 import com.mankart.mygithubuser.viewmodel.UserViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var rvUser: RecyclerView
     private lateinit var listUserAdapter: ListUserAdapter
-    private var list: ArrayList<UserModel> = arrayListOf()
     private val userViewModel: UserViewModel by viewModels()
-
-    companion object {
-        const val TAG = "Main Activity"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +65,7 @@ class MainActivity : AppCompatActivity() {
 
         listUserAdapter.setOnItemClickCallback(object: ListUserAdapter.OnItemClickCallback {
             override fun onItemClicked(username: String?) {
-                userViewModel.searchUserByUsername(username)
+                userViewModel.getUserByUsername(username)
             }
         })
     }
@@ -117,20 +105,5 @@ class MainActivity : AppCompatActivity() {
 
     private fun showToast(message: String, long: Boolean = true) {
         Toast.makeText(this@MainActivity, message, if (long) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
-    }
-
-    private fun dataUsers() {
-        list.add(
-            UserModel(
-                0,
-                "https://avatars.githubusercontent.com/u/63949402?v=4",
-                0,
-                "Reski Mulud Muchamad",
-                "UMMI",
-                "Sukabumi",
-                40,
-                "reskimlud"
-            )
-        )
     }
 }
