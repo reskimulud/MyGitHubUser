@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mankart.mygithubuser.adapter.ListUserAdapter
 import com.mankart.mygithubuser.R
 import com.mankart.mygithubuser.databinding.ActivityMainBinding
+import com.mankart.mygithubuser.model.UserModel
 import com.mankart.mygithubuser.viewmodel.UserViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         initObserver()
         showRecycleList()
+        initialUsers()
 
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setIcon(R.mipmap.ic_launcher_foreground)
@@ -105,5 +107,61 @@ class MainActivity : AppCompatActivity() {
 
     private fun showToast(message: String, long: Boolean = true) {
         Toast.makeText(this@MainActivity, message, if (long) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
+    }
+
+    private fun initialUsers() {
+        val users: ArrayList<UserModel> = arrayListOf(
+            UserModel(
+                0,
+                "https://avatars.githubusercontent.com/u/63949402?v=4",
+                0,
+                "",
+                "",
+                "",
+                0,
+                "reskimulud"
+            ),
+            UserModel(
+                0,
+                "https://avatars.githubusercontent.com/u/69951585?v=4",
+                0,
+                "",
+                "",
+                "",
+                0,
+                "Ikram-Maulana"
+            ),
+            UserModel(
+                0,
+                "https://avatars.githubusercontent.com/u/49898183?v=4",
+                0,
+                "",
+                "",
+                "",
+                0,
+                "fauzywijaya"
+            ),
+            UserModel(
+                0,
+                "https://avatars.githubusercontent.com/u/37388666?v=4",
+                0,
+                "",
+                "",
+                "",
+                0,
+                "drajatdani1892"
+            ),
+            UserModel(
+                0,
+                "https://avatars.githubusercontent.com/u/69128801?v=4",
+                0,
+                "",
+                "",
+                "",
+                0,
+                "Deri-Kurniawan"
+            ),
+        )
+        listUserAdapter.setData(users)
     }
 }
