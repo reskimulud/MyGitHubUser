@@ -24,6 +24,7 @@ import retrofit2.Response
 class FollowerFragment : Fragment() {
     private lateinit var binding: FragmentFollowerBinding
     private lateinit var listUserAdapter: ListUserAdapter
+    private lateinit var tab: String
     private val userViewModel: UserViewModel by activityViewModels()
 
     companion object {
@@ -44,7 +45,7 @@ class FollowerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val tab = TABS[arguments?.getInt(ARG_SECTION_NUMBER, 0)!!.toInt()]
+        tab = TABS[arguments?.getInt(ARG_SECTION_NUMBER, 0)!!.toInt()]
         val username = arguments?.getString(USERNAME)
 
         initObserver()
@@ -65,33 +66,22 @@ class FollowerFragment : Fragment() {
         userViewModel.messageToast.observe(viewLifecycleOwner) {
             showToast(it)
         }
+        when (tab) {
+            TABS[0] -> {
+                userViewModel.userFollower.observe(viewLifecycleOwner) {
+                    listUserAdapter.setData(it)
+                }
+            }
+            TABS[1] -> {
+                userViewModel.userFollowing.observe(viewLifecycleOwner) {
+                    listUserAdapter.setData(it)
+                }
+            }
+        }
     }
 
     private fun getUserFollow(tab: String, username: String?) {
-        showLoading(true)
-        val dataUserFollow = username?.let { ApiConfig.getApiService().getUserFollow(it, tab) }
-        dataUserFollow?.enqueue(object : Callback<ArrayList<UserModel>> {
-            override fun onResponse(
-                call: Call<ArrayList<UserModel>>,
-                response: Response<ArrayList<UserModel>>
-            ) {
-                showLoading(false)
-                if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    if (responseBody != null) {
-                        listUserAdapter.setData(responseBody)
-                    }
-                } else {
-                    Log.e(tab, "onFailure : ${response.message()}")
-                }
-            }
-
-            override fun onFailure(call: Call<ArrayList<UserModel>>, t: Throwable) {
-                showLoading(false)
-                Log.e(tab, "onFailure : ${t.message}")
-            }
-
-        })
+        userViewModel.getUserFollow(tab, username)
     }
 
     private fun showRecycleList() {

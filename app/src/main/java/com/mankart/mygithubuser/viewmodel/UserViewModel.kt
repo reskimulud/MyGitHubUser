@@ -17,8 +17,11 @@ class UserViewModel: ViewModel() {
     private val _listUser = MutableLiveData<ArrayList<UserModel>>()
     val listUser: LiveData<ArrayList<UserModel>> = _listUser
 
-    private val _userFollow = MutableLiveData<UsersListModel>()
-    val userFollow: LiveData<UsersListModel> = _userFollow
+    private val _userFollower = MutableLiveData<ArrayList<UserModel>>()
+    val userFollower: LiveData<ArrayList<UserModel>> = _userFollower
+
+    private val _userFollowing = MutableLiveData<ArrayList<UserModel>>()
+    val userFollowing: LiveData<ArrayList<UserModel>> = _userFollowing
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -75,6 +78,35 @@ class UserViewModel: ViewModel() {
                 _messageToast.value = t.message.toString()
             }
 
+        })
+    }
+
+    fun getUserFollow(tab: String, username: String?) {
+        _isLoading.value = true
+        val dataUserFollow = username?.let { ApiConfig.getApiService().getUserFollow(username, tab) }
+        dataUserFollow?.enqueue(object : Callback<ArrayList<UserModel>> {
+            override fun onResponse(
+                call: Call<ArrayList<UserModel>>,
+                response: Response<ArrayList<UserModel>>
+            ) {
+                _isLoading.value = false
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if (responseBody != null) {
+                        when (tab) {
+                            "followers" -> _userFollower.value = responseBody
+                            "following" -> _userFollowing.value = responseBody
+                        }
+                    }
+                } else {
+                    _messageToast.value = response.message()
+                }
+            }
+
+            override fun onFailure(call: Call<ArrayList<UserModel>>, t: Throwable) {
+                _isLoading.value = false
+                _messageToast.value = t.message.toString()
+            }
         })
     }
 }
