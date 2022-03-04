@@ -42,7 +42,6 @@ class FollowerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val tvLabel: TextView = binding.sectionLabel
         val tab = TABS[arguments?.getInt(ARG_SECTION_NUMBER, 0)!!.toInt()]
         val username = arguments?.getString(USERNAME)
 

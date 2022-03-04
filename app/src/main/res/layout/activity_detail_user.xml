@@ -50,9 +50,8 @@
         android:layout_marginHorizontal="20dp"
         android:background="@drawable/rounded_corner"
         android:orientation="vertical"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingRight="20dp">
+        android:paddingHorizontal="20dp"
+        android:paddingTop="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -64,9 +63,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_avatar"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="10dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 tools:src="@tools:sample/avatars" />
 
             <LinearLayout
@@ -79,10 +77,10 @@
                     android:id="@+id/tv_name_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:text="@string/name"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -91,7 +89,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/username"
                     android:textColor="@color/secondaryLightColor"
-                    android:textSize="14sp" />
+                    android:textSize="12sp" />
 
 
             </LinearLayout>
@@ -101,8 +99,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -120,7 +116,7 @@
                     android:gravity="center"
                     android:textAllCaps="true"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     tools:text="10k" />
 
@@ -135,7 +131,8 @@
 
             <LinearLayout
                 android:layout_width="30dp"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                tools:ignore="UselessLeaf" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -151,7 +148,7 @@
                     android:gravity="center"
                     android:textAllCaps="true"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     tools:text="10k" />
 
@@ -166,7 +163,8 @@
 
             <LinearLayout
                 android:layout_width="30dp"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                tools:ignore="UselessLeaf" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -183,7 +181,7 @@
                     tools:text="10k"
                     android:textAllCaps="true"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -201,12 +199,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="10dp">
 
             <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@drawable/company_icon" />
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/company_icon"
+                android:contentDescription="@string/desc_company_logo" />
 
             <TextView
                 android:id="@+id/tv_company"
@@ -218,7 +217,7 @@
                 android:lines="1"
                 android:text="@string/company"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -226,12 +225,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="10dp">
 
             <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@drawable/location_icon" />
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/location_icon"
+                android:contentDescription="@string/desc_location_logo" />
 
             <TextView
                 android:id="@+id/tv_location"
@@ -243,7 +243,7 @@
                 android:lines="1"
                 android:text="@string/location"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
         </LinearLayout>
 

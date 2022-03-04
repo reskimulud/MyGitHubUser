@@ -14,4 +14,6 @@
     <string name="content_tab_follower">Follower</string>
     <string name="content_tab_following">Following</string>
     <string name="content_tab_text">This is Tab %1$d</string>
+    <string name="desc_company_logo">Company Logo</string>
+    <string name="desc_location_logo">Location Logo</string>
 </resources>
