@@ -1,5 +1,6 @@
 package com.mankart.mygithubuser.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,8 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mankart.mygithubuser.R
+import com.mankart.mygithubuser.activity.DetailUserActivity
 import com.mankart.mygithubuser.activity.MainActivity
 import com.mankart.mygithubuser.adapter.ListUserAdapter
 import com.mankart.mygithubuser.databinding.FragmentFollowerBinding
@@ -80,6 +83,36 @@ class FollowerFragment : Fragment() {
         binding.rvFollow.layoutManager = LinearLayoutManager(context)
         listUserAdapter = ListUserAdapter()
         binding.rvFollow.adapter = listUserAdapter
+
+        listUserAdapter.setOnItemClickCallback(object: ListUserAdapter.OnItemClickCallback {
+            override fun onItemClicked(username: String?) {
+                showLoading(true)
+                val detailUser = username?.let { ApiConfig.getApiService().getUser(it) }
+                detailUser?.enqueue(object : Callback<UserModel> {
+                    override fun onResponse(call: Call<UserModel>, response: Response<UserModel>) {
+                        showLoading(false)
+                        if (response.isSuccessful) {
+                            val responseBody = response.body()
+                            if (responseBody != null) {
+                                val moveIntent = Intent(activity, DetailUserActivity::class.java)
+                                moveIntent.putExtra(DetailUserActivity.PUT_EXTRA, responseBody)
+                                startActivity(moveIntent)
+                            }
+                        } else {
+                            showToast(response.message())
+                            Log.e(MainActivity.TAG, "onFailure: ${response.message()}")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<UserModel>, t: Throwable) {
+                        showToast(t.message.toString())
+                        Log.e(MainActivity.TAG, "onFailure: ${t.message}")
+                    }
+
+                })
+            }
+
+        })
     }
 
     private fun showLoading(isLoading: Boolean) {
@@ -88,5 +121,9 @@ class FollowerFragment : Fragment() {
         } else {
             binding.progressBar.visibility = View.GONE
         }
+    }
+
+    private fun showToast(message: String, long: Boolean = true) {
+        Toast.makeText(context, message, if (long) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
     }
 }

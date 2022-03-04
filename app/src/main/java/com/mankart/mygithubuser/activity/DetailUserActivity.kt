@@ -13,6 +13,9 @@ import com.mankart.mygithubuser.adapter.FollowTabPagerAdapter
 import com.mankart.mygithubuser.databinding.ActivityDetailUserBinding
 import com.mankart.mygithubuser.model.UserModel
 import java.text.DecimalFormat
+import kotlin.math.floor
+import kotlin.math.log10
+import kotlin.math.pow
 
 class DetailUserActivity : AppCompatActivity() {
 
@@ -36,18 +39,7 @@ class DetailUserActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val data = intent.getParcelableExtra<UserModel>(PUT_EXTRA) as UserModel
-
-        binding.tvNameDetail.text = data.name
-        binding.tvUsernameDetail.text = data.login
-        Glide.with(this)
-            .load(data.avatarUrl)
-            .apply(RequestOptions().override(400, 400))
-            .into(binding.imgAvatar)
-        binding.tvRepo.text = data.publicRepos?.let { getDecimal(it) }
-        binding.tvFollowers.text = data.followers?.let { getDecimal(it) }
-        binding.tvFollowing.text = data.following?.let { getDecimal(it) }
-        binding.tvCompany.text = data.company
-        binding.tvLocation.text = data.location
+        setLayout(data)
 
         val followTabPagerAdapter = data.login?.let { FollowTabPagerAdapter(this, it) }
         val viewPager: ViewPager2 = binding.viewPager
@@ -60,17 +52,28 @@ class DetailUserActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
+    private fun setLayout(data: UserModel) {
+        binding.tvNameDetail.text = data.name
+        binding.tvUsernameDetail.text = data.login
+        Glide.with(this)
+            .load(data.avatarUrl)
+            .apply(RequestOptions().override(400, 400))
+            .into(binding.imgAvatar)
+        binding.tvRepo.text = data.publicRepos?.let { getDecimal(it) }
+        binding.tvFollowers.text = data.followers?.let { getDecimal(it) }
+        binding.tvFollowing.text = data.following?.let { getDecimal(it) }
+        binding.tvCompany.text = data.company
+        binding.tvLocation.text = data.location
+    }
+
     private fun getDecimal(n: Int) : String {
         val suffix = charArrayOf(' ', 'k', 'M', 'B', 'T', 'P', 'E')
         val countNum: Long = n.toLong() ?: 0
-        val sum = Math.floor(Math.log10(countNum.toDouble())).toInt()
+        val sum = floor(log10(countNum.toDouble())).toInt()
         val base = sum / 3
         return if (sum >= 3 && base < suffix.size) {
             DecimalFormat("#0.0").format(
-                countNum / Math.pow(
-                    10.0,
-                    base * 3.toDouble()
-                )
+                countNum / 10.0.pow(base * 3.toDouble())
             ) + suffix[base]
         } else {
             DecimalFormat().format(countNum)
