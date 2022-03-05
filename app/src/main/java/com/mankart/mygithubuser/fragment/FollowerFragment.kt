@@ -2,7 +2,6 @@ package com.mankart.mygithubuser.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,12 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.mankart.mygithubuser.activity.DetailUserActivity
 import com.mankart.mygithubuser.adapter.ListUserAdapter
 import com.mankart.mygithubuser.databinding.FragmentFollowerBinding
-import com.mankart.mygithubuser.model.UserModel
-import com.mankart.mygithubuser.services.ApiConfig
 import com.mankart.mygithubuser.viewmodel.UserViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class FollowerFragment : Fragment() {
@@ -26,12 +20,6 @@ class FollowerFragment : Fragment() {
     private lateinit var listUserAdapter: ListUserAdapter
     private lateinit var tab: String
     private val userViewModel: UserViewModel by activityViewModels()
-
-    companion object {
-        val TABS = listOf("followers", "following")
-        const val ARG_SECTION_NUMBER ="tab_number"
-        const val USERNAME = "username"
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -107,5 +95,11 @@ class FollowerFragment : Fragment() {
 
     private fun showToast(message: String, long: Boolean = true) {
         Toast.makeText(context, message, if (long) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
+    }
+
+    companion object {
+        val TABS = listOf("followers", "following")
+        const val ARG_SECTION_NUMBER ="tab_number"
+        const val USERNAME = "username"
     }
 }

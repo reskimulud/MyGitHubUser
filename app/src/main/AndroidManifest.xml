@@ -16,7 +16,8 @@
             android:parentActivityName="com.mankart.mygithubuser.activity.MainActivity" />
         <activity
             android:name="com.mankart.mygithubuser.activity.SplashScreenActivity"
-            android:theme="@style/SplashScreenStyle">
+            android:theme="@style/SplashScreenStyle"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

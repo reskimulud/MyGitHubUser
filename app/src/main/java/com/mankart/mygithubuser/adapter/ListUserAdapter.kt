@@ -35,7 +35,9 @@ class ListUserAdapter: RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
 
         Glide.with(holder.itemView.context)
             .load(user.avatarUrl)
+            .placeholder(R.drawable.placeholder)
             .apply(RequestOptions().override(400, 400))
+            .error(R.drawable.placeholder)
             .into(holder.imgAvatar)
         holder.tvUsername.text = user.login
 
@@ -48,13 +50,11 @@ class ListUserAdapter: RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
         this.onClickCallback = onItemClickCallback
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     fun clearData() {
         listUser.clear()
         notifyDataSetChanged()
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     fun setData(newList: ArrayList<UserModel>) {
         listUser.clear()
         listUser.addAll(newList)

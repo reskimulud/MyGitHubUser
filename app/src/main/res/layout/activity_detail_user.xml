@@ -196,56 +196,44 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="10dp">
-
-            <ImageView
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:src="@drawable/company_icon"
-                android:contentDescription="@string/desc_company_logo" />
+            android:orientation="vertical"
+            android:gravity="start"
+            android:layout_marginVertical="10dp">
 
             <TextView
                 android:id="@+id/tv_company"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
+                android:layout_gravity="start"
+                android:gravity="center"
                 android:ellipsize="end"
                 android:lines="1"
                 android:text="@string/company"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginBottom="10dp">
-
-            <ImageView
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:src="@drawable/location_icon"
-                android:contentDescription="@string/desc_location_logo" />
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp"
+                app:drawableStartCompat="@drawable/company_icon" />
 
             <TextView
                 android:id="@+id/tv_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
+                android:layout_gravity="start"
+                android:gravity="center"
                 android:ellipsize="end"
                 android:lines="1"
                 android:text="@string/location"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp"
+                app:drawableStartCompat="@drawable/location_icon" />
 
         </LinearLayout>
+
+
 
     </LinearLayout>
 

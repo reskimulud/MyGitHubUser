@@ -21,16 +21,6 @@ class DetailUserActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailUserBinding
 
-    companion object {
-        const val PUT_EXTRA = "put_extra"
-
-        @StringRes
-        private val TAB_TITLES = intArrayOf(
-            R.string.content_tab_follower,
-            R.string.content_tab_following
-        )
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_user)
@@ -53,17 +43,21 @@ class DetailUserActivity : AppCompatActivity() {
     }
 
     private fun setLayout(data: UserModel) {
-        binding.tvNameDetail.text = data.name
-        binding.tvUsernameDetail.text = data.login
-        Glide.with(this)
-            .load(data.avatarUrl)
-            .apply(RequestOptions().override(400, 400))
-            .into(binding.imgAvatar)
-        binding.tvRepo.text = data.publicRepos?.let { getDecimal(it) }
-        binding.tvFollowers.text = data.followers?.let { getDecimal(it) }
-        binding.tvFollowing.text = data.following?.let { getDecimal(it) }
-        binding.tvCompany.text = data.company
-        binding.tvLocation.text = data.location
+        binding.apply {
+            tvNameDetail.text = data.name
+            tvUsernameDetail.text = data.login
+            Glide.with(this@DetailUserActivity)
+                .load(data.avatarUrl)
+                .placeholder(R.drawable.placeholder)
+                .apply(RequestOptions().override(400, 400))
+                .error(R.drawable.placeholder)
+                .into(imgAvatar)
+            tvRepo.text = data.publicRepos?.let { getDecimal(it) }
+            tvFollowers.text = data.followers?.let { getDecimal(it) }
+            tvFollowing.text = data.following?.let { getDecimal(it) }
+            tvCompany.text = data.company
+            tvLocation.text = data.location
+        }
     }
 
     private fun getDecimal(n: Int) : String {
@@ -78,5 +72,15 @@ class DetailUserActivity : AppCompatActivity() {
         } else {
             DecimalFormat().format(countNum)
         }
+    }
+
+    companion object {
+        const val PUT_EXTRA = "put_extra"
+
+        @StringRes
+        private val TAB_TITLES = intArrayOf(
+            R.string.content_tab_follower,
+            R.string.content_tab_following
+        )
     }
 }
