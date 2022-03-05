@@ -83,7 +83,7 @@ class UserViewModel: ViewModel() {
 
     fun getUserFollow(tab: String, username: String?) {
         _isLoading.value = true
-        val dataUserFollow = username?.let { ApiConfig.getApiService().getUserFollow(username, tab) }
+        val dataUserFollow = username?.let { ApiConfig.getApiService().getUserFollow(username, tab, 100) }
         dataUserFollow?.enqueue(object : Callback<ArrayList<UserModel>> {
             override fun onResponse(
                 call: Call<ArrayList<UserModel>>,
