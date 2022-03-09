@@ -1,8 +1,21 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <color name="primaryColor">@color/white</color>
+    <color name="primaryLightColor">#E1E1E1</color>
+    <color name="primaryDarkColor">#000000</color>
+    <color name="secondaryColor">#5c646d</color>
+    <color name="secondaryLightColor">#34373d</color>
+    <color name="secondaryDarkColor">#323a42</color>
+    <color name="primaryTextColor">@color/black</color>
+    <color name="secondaryTextColor">#252525</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
     <!-- Base application theme. -->
-    <style name="Theme.MyGitHubUser1" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.MyGitHubUser1" parent="Theme.MaterialComponents">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->

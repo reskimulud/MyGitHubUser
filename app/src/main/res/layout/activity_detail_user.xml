@@ -9,6 +9,7 @@
     tools:context=".activity.DetailUserActivity">
 
     <LinearLayout
+        android:id="@+id/jumbotron"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/jumbotron" />
@@ -30,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/profile"
-            android:textColor="@color/white"
+            android:textColor="@color/primaryTextColor"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -79,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="@string/name"
-                    android:textColor="@color/white"
+                    android:textColor="@color/primaryTextColor"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -88,7 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/username"
-                    android:textColor="@color/secondaryLightColor"
+                    android:textColor="@color/secondaryTextColor"
                     android:textSize="12sp" />
 
 
@@ -115,7 +116,7 @@
                     android:layout_weight="2"
                     android:gravity="center"
                     android:textAllCaps="true"
-                    android:textColor="@color/white"
+                    android:textColor="@color/primaryTextColor"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     tools:text="10k" />
@@ -125,7 +126,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/repository"
-                    android:textColor="@color/secondaryLightColor" />
+                    android:textColor="@color/secondaryTextColor" />
 
             </LinearLayout>
 
@@ -147,7 +148,7 @@
                     android:layout_weight="2"
                     android:gravity="center"
                     android:textAllCaps="true"
-                    android:textColor="@color/white"
+                    android:textColor="@color/primaryTextColor"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     tools:text="10k" />
@@ -157,7 +158,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/followers"
-                    android:textColor="@color/secondaryLightColor" />
+                    android:textColor="@color/secondaryTextColor" />
 
             </LinearLayout>
 
@@ -180,7 +181,7 @@
                     android:gravity="center"
                     tools:text="10k"
                     android:textAllCaps="true"
-                    android:textColor="@color/white"
+                    android:textColor="@color/primaryTextColor"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -189,7 +190,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/following"
-                    android:textColor="@color/secondaryLightColor" />
+                    android:textColor="@color/secondaryTextColor" />
 
             </LinearLayout>
 
@@ -212,7 +213,7 @@
                 android:ellipsize="end"
                 android:lines="1"
                 android:text="@string/company"
-                android:textColor="@color/white"
+                android:textColor="@color/primaryTextColor"
                 android:textSize="12sp"
                 android:layout_marginBottom="5dp"
                 app:drawableStartCompat="@drawable/company_icon" />
@@ -226,7 +227,7 @@
                 android:ellipsize="end"
                 android:lines="1"
                 android:text="@string/location"
-                android:textColor="@color/white"
+                android:textColor="@color/primaryTextColor"
                 android:textSize="12sp"
                 android:layout_marginBottom="5dp"
                 app:drawableStartCompat="@drawable/location_icon" />
