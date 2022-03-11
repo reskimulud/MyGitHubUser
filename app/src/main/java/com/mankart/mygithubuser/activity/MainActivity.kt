@@ -2,27 +2,37 @@ package com.mankart.mygithubuser.activity
 
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.mankart.mygithubuser.adapter.ListUserAdapter
 import com.mankart.mygithubuser.R
 import com.mankart.mygithubuser.databinding.ActivityMainBinding
 import com.mankart.mygithubuser.fragment.PreferenceFragment
 import com.mankart.mygithubuser.viewmodel.UserViewModel
 import androidx.fragment.app.commit
+import androidx.lifecycle.ViewModelProvider
+import com.mankart.mygithubuser.data.datastore.SettingPreference
 import com.mankart.mygithubuser.fragment.HomeFragment
 import com.mankart.mygithubuser.viewmodel.MainViewModel
+import com.mankart.mygithubuser.viewmodel.ViewModelFactory
+
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var listUserAdapter: ListUserAdapter
     private val userViewModel: UserViewModel by viewModels()
-    private val mainViewModel: MainViewModel by viewModels()
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,16 +41,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        listUserAdapter = ListUserAdapter()
+        val pref = SettingPreference.getInstance(dataStore)
+        mainViewModel = ViewModelProvider(this, ViewModelFactory(pref))[MainViewModel::class.java]
 
-        mainViewModel.changeActionBarTitle(getString(R.string.app_name))
+        listUserAdapter = ListUserAdapter()
 
         supportFragmentManager.commit {
             add(binding.fragmentPlaceholder.id, HomeFragment(), HomeFragment::class.java.simpleName)
-        }
-
-        mainViewModel.actionBarTitle.observe(this) {
-            supportActionBar?.title = it
         }
 
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -75,10 +82,8 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_setting -> {
-                supportFragmentManager.commit {
-                    replace(binding.fragmentPlaceholder.id, PreferenceFragment(), PreferenceFragment::class.java.simpleName)
-                    addToBackStack(null)
-                }
+                val intent = Intent(this@MainActivity, SettingActivity::class.java)
+                startActivity(intent)
                 true
             }
             else -> true

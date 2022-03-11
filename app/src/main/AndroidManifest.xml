@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mankart.mygithubuser">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -12,19 +12,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyGitHubUser1">
         <activity
-            android:name="com.mankart.mygithubuser.activity.DetailUserActivity"
-            android:parentActivityName="com.mankart.mygithubuser.activity.MainActivity" />
+            android:name=".activity.SettingActivity"
+            android:exported="false"
+            android:parentActivityName=".activity.MainActivity"/>
         <activity
-            android:name="com.mankart.mygithubuser.activity.SplashScreenActivity"
-            android:theme="@style/SplashScreenStyle"
-            android:exported="true">
+            android:name=".activity.DetailUserActivity" />
+        <activity
+            android:name=".activity.SplashScreenActivity"
+            android:exported="true"
+            android:theme="@style/SplashScreenStyle">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.mankart.mygithubuser.activity.MainActivity" />
+        <activity android:name=".activity.MainActivity" />
     </application>
 
 </manifest>

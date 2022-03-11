@@ -2,8 +2,8 @@ package com.mankart.mygithubuser.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -58,6 +58,9 @@ class DetailUserActivity : AppCompatActivity() {
             tvFollowing.text = data.following?.let { getDecimal(it) }
             tvCompany.text = data.company
             tvLocation.text = data.location
+            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+                jumbotron.background = getDrawable(R.drawable.jumbotron_night)
+            }
         }
     }
 

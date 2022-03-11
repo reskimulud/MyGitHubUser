@@ -1,26 +1,34 @@
 package com.mankart.mygithubuser.activity
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import com.mankart.mygithubuser.R
 import com.mankart.mygithubuser.data.datastore.SettingPreference
+import com.mankart.mygithubuser.databinding.ActivitySettingBinding
+import com.mankart.mygithubuser.fragment.PreferenceFragment
 import com.mankart.mygithubuser.viewmodel.MainViewModel
 import com.mankart.mygithubuser.viewmodel.ViewModelFactory
 
-class SplashScreenActivity : AppCompatActivity() {
+class SettingActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySettingBinding
     private lateinit var mainViewModel: MainViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash_screen)
+        setContentView(R.layout.activity_setting)
 
-        val delayMillis = 2000L
+        binding = ActivitySettingBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         val pref = SettingPreference.getInstance(dataStore)
         mainViewModel = ViewModelProvider(this, ViewModelFactory(pref))[MainViewModel::class.java]
+
+        supportFragmentManager.commit {
+            add(binding.settingHolder.id, PreferenceFragment(), PreferenceFragment::class.java.simpleName)
+        }
 
         mainViewModel.getThemeSetting().observe(this) { isNightMode: Boolean ->
             if (isNightMode) {
@@ -30,10 +38,6 @@ class SplashScreenActivity : AppCompatActivity() {
             }
         }
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            val moveIntent = Intent(this@SplashScreenActivity, MainActivity::class.java)
-            startActivity(moveIntent)
-            finish()
-        }, delayMillis)
+        supportActionBar?.title = "Settings"
     }
 }
