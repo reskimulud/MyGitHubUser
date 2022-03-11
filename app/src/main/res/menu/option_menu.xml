@@ -7,4 +7,12 @@
         android:icon="@drawable/ic_search"
         app:showAsAction="collapseActionView|always"
         app:actionViewClass="androidx.appcompat.widget.SearchView" />
+
+    <group android:menuCategory="container">
+        <item
+            android:id="@+id/menu_setting"
+            android:title="@string/setting"
+            android:icon="@drawable/ic_settings"
+            app:showAsAction="ifRoom" />
+    </group>
 </menu>

@@ -2,28 +2,27 @@ package com.mankart.mygithubuser.activity
 
 import android.app.SearchManager
 import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
-import android.view.View
-import android.widget.Toast
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.mankart.mygithubuser.adapter.ListUserAdapter
 import com.mankart.mygithubuser.R
 import com.mankart.mygithubuser.databinding.ActivityMainBinding
-import com.mankart.mygithubuser.model.UserModel
+import com.mankart.mygithubuser.fragment.PreferenceFragment
 import com.mankart.mygithubuser.viewmodel.UserViewModel
+import androidx.fragment.app.commit
+import com.mankart.mygithubuser.fragment.HomeFragment
+import com.mankart.mygithubuser.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var rvUser: RecyclerView
     private lateinit var listUserAdapter: ListUserAdapter
     private val userViewModel: UserViewModel by viewModels()
+    private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,44 +31,20 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        rvUser = binding.rvUsers
-        rvUser.setHasFixedSize(true)
+        listUserAdapter = ListUserAdapter()
 
-        initObserver()
-        showRecycleList()
-        initialUsers()
+        mainViewModel.changeActionBarTitle(getString(R.string.app_name))
+
+        supportFragmentManager.commit {
+            add(binding.fragmentPlaceholder.id, HomeFragment(), HomeFragment::class.java.simpleName)
+        }
+
+        mainViewModel.actionBarTitle.observe(this) {
+            supportActionBar?.title = it
+        }
 
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setIcon(R.mipmap.ic_launcher_foreground)
-    }
-
-    private fun initObserver() {
-        userViewModel.listUser.observe(this) {
-            listUserAdapter.setData(it)
-        }
-        userViewModel.isLoading.observe(this) {
-            showLoading(it)
-        }
-        userViewModel.messageToast.observe(this) {
-            showToast(it)
-        }
-        userViewModel.user.observe(this) {
-            val moveIntent = Intent(this@MainActivity, DetailUserActivity::class.java)
-            moveIntent.putExtra(DetailUserActivity.PUT_EXTRA, it)
-            startActivity(moveIntent)
-        }
-    }
-
-    private fun showRecycleList() {
-        rvUser.layoutManager = LinearLayoutManager(this)
-        listUserAdapter = ListUserAdapter()
-        rvUser.adapter = listUserAdapter
-
-        listUserAdapter.setOnItemClickCallback(object: ListUserAdapter.OnItemClickCallback {
-            override fun onItemClicked(username: String?) {
-                userViewModel.getUserByUsername(username)
-            }
-        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -97,71 +72,16 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_setting -> {
+                supportFragmentManager.commit {
+                    replace(binding.fragmentPlaceholder.id, PreferenceFragment(), PreferenceFragment::class.java.simpleName)
+                    addToBackStack(null)
+                }
+                true
+            }
+            else -> true
         }
-    }
-
-    private fun showToast(message: String, long: Boolean = true) {
-        Toast.makeText(this@MainActivity, message, if (long) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
-    }
-
-    private fun initialUsers() {
-        val users: ArrayList<UserModel> = arrayListOf(
-            UserModel(
-                0,
-                "https://avatars.githubusercontent.com/u/63949402?v=4",
-                0,
-                "",
-                "",
-                "",
-                0,
-                "reskimulud"
-            ),
-            UserModel(
-                0,
-                "https://avatars.githubusercontent.com/u/69951585?v=4",
-                0,
-                "",
-                "",
-                "",
-                0,
-                "Ikram-Maulana"
-            ),
-            UserModel(
-                0,
-                "https://avatars.githubusercontent.com/u/49898183?v=4",
-                0,
-                "",
-                "",
-                "",
-                0,
-                "fauzywijaya"
-            ),
-            UserModel(
-                0,
-                "https://avatars.githubusercontent.com/u/37388666?v=4",
-                0,
-                "",
-                "",
-                "",
-                0,
-                "drajatdani1892"
-            ),
-            UserModel(
-                0,
-                "https://avatars.githubusercontent.com/u/69128801?v=4",
-                0,
-                "",
-                "",
-                "",
-                0,
-                "Deri-Kurniawan"
-            ),
-        )
-        listUserAdapter.setData(users)
     }
 }

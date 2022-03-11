@@ -17,4 +17,9 @@
     <string name="desc_company_logo">Company Logo</string>
     <string name="desc_location_logo">Location Logo</string>
     <string name="iv_splash_screen">Icon Launcher on Splash Screen</string>
+    <string name="key_username">username</string>
+    <string name="nothing">Not set yet</string>
+    <string name="key_night_mode">night</string>
+    <string name="is_night_mode">Night Mode</string>
+    <string name="setting">Setting</string>
 </resources>

@@ -75,6 +75,7 @@ class UserViewModel: ViewModel() {
             }
 
             override fun onFailure(call: Call<UserModel>, t: Throwable) {
+                _isLoading.value = false
                 _messageToast.value = t.message.toString()
             }
 
