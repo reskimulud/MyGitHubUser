@@ -13,17 +13,17 @@
     <color name="black">#000000</color>
 
     <!-- Base application theme. -->
-    <style name="Theme.MyGitHubUser1" parent="Theme.MaterialComponents">
+    <style name="Theme.MyGitHubUser1" parent="Theme.MaterialComponents.DayNight">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/primaryColor</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/secondaryColor</item>
         <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
         <item name="colorOnSecondary">@color/secondaryLightColor</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/primaryColor</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/primaryLightColor</item>
         <!-- Customize your theme here. -->
         <item name="android:navigationBarColor">@color/primaryColor</item>
         <item name="fontFamily">@font/segoe_ui</item>
@@ -31,6 +31,7 @@
 
     <!-- splash screen -->
     <style name="SplashScreenStyle" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:statusBarColor">@color/primaryColor</item>
         <item name="android:layout">@layout/activity_splash_screen</item>
         <item name="android:navigationBarColor">@color/primaryColor</item>
     </style>

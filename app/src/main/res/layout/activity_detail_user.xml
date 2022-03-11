@@ -12,7 +12,8 @@
         android:id="@+id/jumbotron"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/jumbotron" />
+        android:background="@drawable/jumbotron"
+        android:orientation="horizontal" />
 
     <LinearLayout
         android:id="@+id/topbar"
@@ -246,10 +247,11 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
+            android:layout_marginTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
-            app:tabTextColor="@android:color/white"
+            app:tabTextColor="@color/primaryTextColor"
             app:tabIndicatorColor="@color/primaryLightColor"
             tools:ignore="SpeakableTextPresentCheck" />
 
