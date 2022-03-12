@@ -43,25 +43,20 @@ class FollowerFragment : Fragment() {
     }
 
     private fun initObserver() {
-        userViewModel.user.observe(viewLifecycleOwner) {
-            val moveIntent = Intent(context, DetailUserActivity::class.java)
-            moveIntent.putExtra(DetailUserActivity.PUT_EXTRA, it)
-            startActivity(moveIntent)
-        }
-        userViewModel.isLoading.observe(viewLifecycleOwner) {
+        userViewModel.isLoading.observe(requireActivity()) {
             showLoading(it)
         }
-        userViewModel.messageToast.observe(viewLifecycleOwner) {
+        userViewModel.messageToast.observe(requireActivity()) {
             showToast(it)
         }
         when (tab) {
             TABS[0] -> {
-                userViewModel.userFollower.observe(viewLifecycleOwner) {
+                userViewModel.userFollower.observe(requireActivity()) {
                     listUserAdapter.setData(it)
                 }
             }
             TABS[1] -> {
-                userViewModel.userFollowing.observe(viewLifecycleOwner) {
+                userViewModel.userFollowing.observe(requireActivity()) {
                     listUserAdapter.setData(it)
                 }
             }
@@ -79,7 +74,9 @@ class FollowerFragment : Fragment() {
 
         listUserAdapter.setOnItemClickCallback(object: ListUserAdapter.OnItemClickCallback {
             override fun onItemClicked(username: String?) {
-                userViewModel.getUserByUsername(username)
+                val intent = Intent(activity, DetailUserActivity::class.java)
+                intent.putExtra(DetailUserActivity.PUT_EXTRA, username)
+                startActivity(intent)
             }
 
         })

@@ -2,6 +2,8 @@ package com.mankart.mygithubuser.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.viewpager2.widget.ViewPager2
@@ -13,6 +15,7 @@ import com.mankart.mygithubuser.R
 import com.mankart.mygithubuser.adapter.FollowTabPagerAdapter
 import com.mankart.mygithubuser.databinding.ActivityDetailUserBinding
 import com.mankart.mygithubuser.model.UserModel
+import com.mankart.mygithubuser.viewmodel.UserViewModel
 import java.text.DecimalFormat
 import kotlin.math.floor
 import kotlin.math.log10
@@ -21,6 +24,7 @@ import kotlin.math.pow
 class DetailUserActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailUserBinding
+    private val userViewModel: UserViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,21 +33,29 @@ class DetailUserActivity : AppCompatActivity() {
         binding = ActivityDetailUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val data = intent.getParcelableExtra<UserModel>(PUT_EXTRA) as UserModel
-        setLayout(data)
+//        data = intent.getParcelableExtra<UserModel>(PUT_EXTRA) as UserModel
+        val username = intent.getStringExtra(PUT_EXTRA)
+        userViewModel.getUserByUsername(username)
 
-        val followTabPagerAdapter = data.login?.let { FollowTabPagerAdapter(this, it) }
-        val viewPager: ViewPager2 = binding.viewPager
-        viewPager.adapter = followTabPagerAdapter
-        val tabs: TabLayout = binding.tabs
-        TabLayoutMediator(tabs, viewPager) { tab, position ->
-            tab.text = resources.getString(TAB_TITLES[position])
-        }.attach()
+        userViewModel.user.observe(this) { data ->
+            if (data != null) {
+                setLayout(data)
+
+                val followTabPagerAdapter = data.login?.let { FollowTabPagerAdapter(this, it) }
+                val viewPager: ViewPager2 = binding.viewPager
+                viewPager.adapter = followTabPagerAdapter
+                val tabs: TabLayout = binding.tabs
+                TabLayoutMediator(tabs, viewPager) { tab, position ->
+                    tab.text = resources.getString(TAB_TITLES[position])
+                }.attach()
+            }
+        }
 
         supportActionBar?.hide()
     }
 
     private fun setLayout(data: UserModel) {
+//        isInvisibleCard(true)
         binding.apply {
             tvNameDetail.text = data.name
             tvUsernameDetail.text = data.login
@@ -62,7 +74,25 @@ class DetailUserActivity : AppCompatActivity() {
                 jumbotron.background = getDrawable(R.drawable.jumbotron_night)
             }
         }
+//        isInvisibleCard(false)
     }
+
+//    private fun isInvisibleCard(isInvisible: Boolean) {
+//        when (isInvisible) {
+//            true -> binding.apply {
+//                progressBar.visibility = View.VISIBLE
+//                imgName.visibility = View.INVISIBLE
+//                countRepoFollow.visibility = View.INVISIBLE
+//                companyLoc.visibility = View.INVISIBLE
+//            }
+//            else -> binding.apply {
+//                progressBar.visibility = View.GONE
+//                imgName.visibility = View.VISIBLE
+//                countRepoFollow.visibility = View.VISIBLE
+//                companyLoc.visibility = View.VISIBLE
+//            }
+//        }
+//    }
 
     private fun getDecimal(n: Int) : String {
         val suffix = charArrayOf(' ', 'k', 'M', 'B', 'T', 'P', 'E')

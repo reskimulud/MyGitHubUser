@@ -27,18 +27,27 @@ class PreferenceFragment : PreferenceFragmentCompat(), SharedPreferences.OnShare
         addPreferencesFromResource(R.xml.preferences)
 
         val pref = SettingPreference.getInstance(requireActivity().dataStore)
-        mainViewModel = ViewModelProvider(this, ViewModelFactory(pref))[MainViewModel::class.java]
+        mainViewModel = ViewModelProvider(requireActivity(), ViewModelFactory(pref))[MainViewModel::class.java]
 
         init()
         initObserver()
     }
 
     private fun initObserver() {
-        mainViewModel.getUsername().observe(this) {
-            usernamePreference.summary = it
+        mainViewModel.getUsername().observe(requireActivity()) {
+            if (it != null) {
+                usernamePreference.summary = it
+            } else {
+                usernamePreference.summary = SettingPreference.DEFAULT_VAL
+            }
         }
-        mainViewModel.getThemeSetting().observe(this) {
-            nightModePreference.isChecked = it
+        mainViewModel.getThemeSetting().observe(requireActivity()) { isNightMode: Boolean ->
+            if (isNightMode) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+            nightModePreference.isChecked = isNightMode
         }
     }
 

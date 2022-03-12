@@ -30,14 +30,6 @@ class SettingActivity : AppCompatActivity() {
             add(binding.settingHolder.id, PreferenceFragment(), PreferenceFragment::class.java.simpleName)
         }
 
-        mainViewModel.getThemeSetting().observe(this) { isNightMode: Boolean ->
-            if (isNightMode) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
-        }
-
         supportActionBar?.title = "Settings"
     }
 }

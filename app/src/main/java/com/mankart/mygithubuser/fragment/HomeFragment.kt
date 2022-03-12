@@ -11,7 +11,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.mankart.mygithubuser.R
 import com.mankart.mygithubuser.activity.DetailUserActivity
 import com.mankart.mygithubuser.activity.dataStore
 import com.mankart.mygithubuser.adapter.ListUserAdapter
@@ -53,19 +52,14 @@ class HomeFragment : Fragment() {
     }
 
     private fun initObserver() {
-        userViewModel.listUser.observe(viewLifecycleOwner) {
+        userViewModel.listUser.observe(requireActivity()) {
             listUserAdapter.setData(it)
         }
-        userViewModel.isLoading.observe(viewLifecycleOwner) {
+        userViewModel.isLoading.observe(requireActivity()) {
             showLoading(it)
         }
-        userViewModel.messageToast.observe(viewLifecycleOwner) {
+        userViewModel.messageToast.observe(requireActivity()) {
             showToast(it)
-        }
-        userViewModel.user.observe(viewLifecycleOwner) {
-            val moveIntent = Intent(activity, DetailUserActivity::class.java)
-            moveIntent.putExtra(DetailUserActivity.PUT_EXTRA, it)
-            startActivity(moveIntent)
         }
     }
 
@@ -76,7 +70,9 @@ class HomeFragment : Fragment() {
 
         listUserAdapter.setOnItemClickCallback(object: ListUserAdapter.OnItemClickCallback {
             override fun onItemClicked(username: String?) {
-                userViewModel.getUserByUsername(username)
+                val intent = Intent(activity, DetailUserActivity::class.java)
+                intent.putExtra(DetailUserActivity.PUT_EXTRA, username)
+                startActivity(intent)
             }
         })
     }
