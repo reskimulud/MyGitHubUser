@@ -1,6 +1,7 @@
 package com.mankart.mygithubuser.viewmodel
 
 import androidx.lifecycle.*
+import com.mankart.mygithubuser.model.RepoModel
 import com.mankart.mygithubuser.model.UserModel
 import com.mankart.mygithubuser.model.UsersListModel
 import com.mankart.mygithubuser.services.ApiConfig
@@ -27,6 +28,9 @@ class UserViewModel: ViewModel() {
 
     private val _messageToast = MutableLiveData<String>()
     val messageToast: LiveData<String> = _messageToast
+
+    private val _listRepo = MutableLiveData<Event<ArrayList<RepoModel>>>()
+    val listRepo: LiveData<Event<ArrayList<RepoModel>>> = _listRepo
 
     fun searchUserByQuery(query: String) {
         _isLoading.value = true
@@ -111,6 +115,33 @@ class UserViewModel: ViewModel() {
                 _isLoading.value = false
                 _messageToast.value = t.message.toString()
             }
+        })
+    }
+
+    fun getListUserRepos(username: String?) {
+        _isLoading.value = true
+        val client = username?.let { ApiConfig.getApiService().getRepos(it) }
+        client?.enqueue(object : Callback<ArrayList<RepoModel>> {
+            override fun onResponse(
+                call: Call<ArrayList<RepoModel>>,
+                response: Response<ArrayList<RepoModel>>
+            ) {
+                if (response.isSuccessful) {
+                    _isLoading.value = false
+                    val responseBody = response.body()
+                    if (responseBody != null) {
+                        _listRepo.value = Event(responseBody)
+                    }
+                } else {
+                    _messageToast.value = response.message()
+                }
+            }
+
+            override fun onFailure(call: Call<ArrayList<RepoModel>>, t: Throwable) {
+                _isLoading.value = false
+                _messageToast.value = t.message.toString()
+            }
+
         })
     }
 }

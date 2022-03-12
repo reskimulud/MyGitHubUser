@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -64,7 +65,23 @@ class HomeFragment : Fragment() {
         }
 
         userViewModel.user.observe(requireActivity()) {
-            setLayout(it.peekContent())
+            it.peekContent().let { user ->
+                setLayout(user)
+                userViewModel.getListUserRepos(user.login)
+            }
+        }
+
+        userViewModel.listRepo.observe(requireActivity()) {
+            it.peekContent().let { repo ->
+                listRepoAdapter.setData(repo)
+            }
+        }
+
+        userViewModel.isLoading.observe(requireActivity()) {
+            showLoading(it)
+        }
+        userViewModel.messageToast.observe(requireActivity()) {
+            showToast(it)
         }
     }
 
@@ -103,5 +120,17 @@ class HomeFragment : Fragment() {
             textView4.visibility = View.VISIBLE
             textView5.visibility = View.VISIBLE
         }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
+    }
+
+    private fun showToast(message: String, long: Boolean = true) {
+        Toast.makeText(activity, message, if (long) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
     }
 }

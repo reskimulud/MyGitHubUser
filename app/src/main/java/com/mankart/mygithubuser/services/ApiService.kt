@@ -1,6 +1,7 @@
 package com.mankart.mygithubuser.services
 
 import com.mankart.mygithubuser.BuildConfig
+import com.mankart.mygithubuser.model.RepoModel
 import com.mankart.mygithubuser.model.UserModel
 import com.mankart.mygithubuser.model.UsersListModel
 import retrofit2.Call
@@ -26,4 +27,10 @@ interface ApiService {
         @Path("follow") follow: String,
         @Query("per_page") perPage: Int
     ) : Call<ArrayList<UserModel>>
+
+    @Headers("Authorization: token ${BuildConfig.AUTH_TOKEN}")
+    @GET("users/{username}/repos")
+    fun getRepos(
+        @Path("username") username: String
+    ) : Call<ArrayList<RepoModel>>
 }
