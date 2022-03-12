@@ -64,14 +64,14 @@ class MainActivity : AppCompatActivity() {
         searchView.queryHint = resources.getString(R.string.search_hint)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
-                supportFragmentManager.commit {
-                    replace(binding.fragmentPlaceholder.id, SearchFragment(), SearchFragment::class.java.simpleName)
-                    addToBackStack(null)
-                }
                 return false
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
+                supportFragmentManager.commit {
+                    replace(binding.fragmentPlaceholder.id, SearchFragment(), SearchFragment::class.java.simpleName)
+                    addToBackStack(null)
+                }
                 listUserAdapter.clearData()
                 userViewModel.searchUserByQuery(query)
                 searchView.clearFocus()
