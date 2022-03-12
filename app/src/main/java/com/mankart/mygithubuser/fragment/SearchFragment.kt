@@ -16,7 +16,6 @@ import com.mankart.mygithubuser.activity.dataStore
 import com.mankart.mygithubuser.adapter.ListUserAdapter
 import com.mankart.mygithubuser.data.datastore.SettingPreference
 import com.mankart.mygithubuser.databinding.FragmentSearchBinding
-import com.mankart.mygithubuser.model.UserModel
 import com.mankart.mygithubuser.viewmodel.MainViewModel
 import com.mankart.mygithubuser.viewmodel.UserViewModel
 import com.mankart.mygithubuser.viewmodel.ViewModelFactory
@@ -48,7 +47,6 @@ class SearchFragment : Fragment() {
 
         showRecycleList()
         initObserver()
-        initialUsers()
     }
 
     private fun initObserver() {
@@ -87,61 +85,5 @@ class SearchFragment : Fragment() {
 
     private fun showToast(message: String, long: Boolean = true) {
         Toast.makeText(activity, message, if (long) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
-    }
-
-    private fun initialUsers() {
-        val users: ArrayList<UserModel> = arrayListOf(
-            UserModel(
-                0,
-                "https://avatars.githubusercontent.com/u/63949402?v=4",
-                0,
-                "",
-                "",
-                "",
-                0,
-                "reskimulud"
-            ),
-            UserModel(
-                0,
-                "https://avatars.githubusercontent.com/u/69951585?v=4",
-                0,
-                "",
-                "",
-                "",
-                0,
-                "Ikram-Maulana"
-            ),
-            UserModel(
-                0,
-                "https://avatars.githubusercontent.com/u/49898183?v=4",
-                0,
-                "",
-                "",
-                "",
-                0,
-                "fauzywijaya"
-            ),
-            UserModel(
-                0,
-                "https://avatars.githubusercontent.com/u/37388666?v=4",
-                0,
-                "",
-                "",
-                "",
-                0,
-                "drajatdani1892"
-            ),
-            UserModel(
-                0,
-                "https://avatars.githubusercontent.com/u/69128801?v=4",
-                0,
-                "",
-                "",
-                "",
-                0,
-                "Deri-Kurniawan"
-            ),
-        )
-        listUserAdapter.setData(users)
     }
 }

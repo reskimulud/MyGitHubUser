@@ -45,12 +45,29 @@ class MainActivity : AppCompatActivity() {
 
         listUserAdapter = ListUserAdapter()
 
-        supportFragmentManager.commit {
-            add(binding.fragmentPlaceholder.id, HomeFragment(), HomeFragment::class.java.simpleName)
-        }
+        homeFragment()
+        initObserve()
 
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.setIcon(R.mipmap.ic_launcher_foreground)
+        supportActionBar?.setIcon(R.mipmap.logo)
+    }
+
+    private fun initObserve() {
+        userViewModel.listUser.observe(this) {
+            if (it != null && it.size > 0) {
+                supportFragmentManager.commit {
+                    replace(binding.fragmentPlaceholder.id, SearchFragment(), SearchFragment::class.java.simpleName)
+                    addToBackStack(null)
+                }
+            }
+        }
+    }
+
+    private fun homeFragment() {
+        supportFragmentManager.commit {
+            replace(binding.fragmentPlaceholder.id, HomeFragment(), HomeFragment::class.java.simpleName)
+            addToBackStack(null)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -68,10 +85,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
-                supportFragmentManager.commit {
-                    replace(binding.fragmentPlaceholder.id, SearchFragment(), SearchFragment::class.java.simpleName)
-                    addToBackStack(null)
-                }
                 listUserAdapter.clearData()
                 userViewModel.searchUserByQuery(query)
                 searchView.clearFocus()

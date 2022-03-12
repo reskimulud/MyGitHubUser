@@ -1,18 +1,17 @@
 package com.mankart.mygithubuser.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.mankart.mygithubuser.model.UserModel
 import com.mankart.mygithubuser.model.UsersListModel
 import com.mankart.mygithubuser.services.ApiConfig
+import com.mankart.mygithubuser.utils.Event
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class UserViewModel: ViewModel() {
-    private val _user = MutableLiveData<UserModel?>()
-    val user: LiveData<UserModel?> = _user
+    private val _user = MutableLiveData<Event<UserModel>>()
+    val user: LiveData<Event<UserModel>> = _user
 
     private val _listUser = MutableLiveData<ArrayList<UserModel>>()
     val listUser: LiveData<ArrayList<UserModel>> = _listUser
@@ -58,6 +57,10 @@ class UserViewModel: ViewModel() {
         })
     }
 
+    fun clearListUser() {
+        _listUser.value?.clear()
+    }
+
     fun getUserByUsername(username: String?) {
         _isLoading.value = true
         val detailUser = username?.let { ApiConfig.getApiService().getUser(it) }
@@ -67,7 +70,7 @@ class UserViewModel: ViewModel() {
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
-                        _user.value = responseBody
+                        _user.value = Event(responseBody)
                     }
                 } else {
                     _messageToast.value = response.message()

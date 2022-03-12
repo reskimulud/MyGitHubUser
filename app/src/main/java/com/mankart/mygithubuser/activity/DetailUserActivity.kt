@@ -37,8 +37,8 @@ class DetailUserActivity : AppCompatActivity() {
         val username = intent.getStringExtra(PUT_EXTRA)
         userViewModel.getUserByUsername(username)
 
-        userViewModel.user.observe(this) { data ->
-            if (data != null) {
+        userViewModel.user.observe(this) {
+            it.getContentIfNotHandled()?.let { data ->
                 setLayout(data)
 
                 val followTabPagerAdapter = data.login?.let { FollowTabPagerAdapter(this, it) }

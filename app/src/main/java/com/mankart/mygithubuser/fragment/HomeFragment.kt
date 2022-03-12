@@ -7,10 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.mankart.mygithubuser.R
+import com.mankart.mygithubuser.activity.MainActivity
 import com.mankart.mygithubuser.activity.dataStore
+import com.mankart.mygithubuser.adapter.ListRepoAdapter
 import com.mankart.mygithubuser.data.datastore.SettingPreference
 import com.mankart.mygithubuser.databinding.FragmentHomeBinding
 import com.mankart.mygithubuser.viewmodel.MainViewModel
@@ -22,6 +26,8 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var mainViewModel: MainViewModel
     private val userViewModel: UserViewModel by activityViewModels()
+    private lateinit var rvRepo: RecyclerView
+    private lateinit var listRepoAdapter: ListRepoAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,17 +41,30 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initLayout()
+        rvRepo = binding.rvRepo
+        rvRepo.setHasFixedSize(true)
 
         val pref = SettingPreference.getInstance(requireActivity().dataStore)
         mainViewModel = ViewModelProvider(requireActivity(), ViewModelFactory(pref))[MainViewModel::class.java]
 
+        initLayout()
+        initObserver()
+        showRecycleList()
+    }
+
+    private fun showRecycleList() {
+        rvRepo.layoutManager = LinearLayoutManager(activity)
+        listRepoAdapter = ListRepoAdapter()
+        rvRepo.adapter = listRepoAdapter
+    }
+
+    private fun initObserver() {
         mainViewModel.getUsername().observe(requireActivity()) {
             userViewModel.getUserByUsername(it)
         }
 
         userViewModel.user.observe(requireActivity()) {
-            setLayout(it)
+            setLayout(it.peekContent())
         }
     }
 
@@ -76,6 +95,8 @@ class HomeFragment : Fragment() {
             name.text = user?.name
             followers.text = user?.followers.toString()
             following.text = user?.following.toString()
+            totalRepo.text = user?.publicRepos.toString()
+
             username.visibility = View.VISIBLE
             following.visibility = View.VISIBLE
             followers.visibility = View.VISIBLE

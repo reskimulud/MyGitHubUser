@@ -22,4 +22,7 @@
     <string name="key_night_mode">night</string>
     <string name="is_night_mode">Night Mode</string>
     <string name="setting">Setting</string>
+    <string name="tv_description">Description</string>
+    <string name="tv_repo_fullname">Fullname</string>
+    <string name="tv_language">Language</string>
 </resources>
