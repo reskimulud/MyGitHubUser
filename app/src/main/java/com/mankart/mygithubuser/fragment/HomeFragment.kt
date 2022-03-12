@@ -1,37 +1,32 @@
 package com.mankart.mygithubuser.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.mankart.mygithubuser.activity.DetailUserActivity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.mankart.mygithubuser.R
 import com.mankart.mygithubuser.activity.dataStore
-import com.mankart.mygithubuser.adapter.ListUserAdapter
 import com.mankart.mygithubuser.data.datastore.SettingPreference
 import com.mankart.mygithubuser.databinding.FragmentHomeBinding
-import com.mankart.mygithubuser.model.UserModel
 import com.mankart.mygithubuser.viewmodel.MainViewModel
 import com.mankart.mygithubuser.viewmodel.UserViewModel
 import com.mankart.mygithubuser.viewmodel.ViewModelFactory
+import com.mankart.mygithubuser.model.UserModel
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var rvUser: RecyclerView
-    private lateinit var listUserAdapter: ListUserAdapter
-    private val userViewModel: UserViewModel by activityViewModels()
     private lateinit var mainViewModel: MainViewModel
+    private val userViewModel: UserViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(layoutInflater)
         return binding.root
@@ -40,108 +35,52 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        rvUser = binding.rvUsers
-        rvUser.setHasFixedSize(true)
+        initLayout()
 
         val pref = SettingPreference.getInstance(requireActivity().dataStore)
         mainViewModel = ViewModelProvider(requireActivity(), ViewModelFactory(pref))[MainViewModel::class.java]
 
-        showRecycleList()
-        initObserver()
-        initialUsers()
-    }
+        mainViewModel.getUsername().observe(requireActivity()) {
+            userViewModel.getUserByUsername(it)
+        }
 
-    private fun initObserver() {
-        userViewModel.listUser.observe(requireActivity()) {
-            listUserAdapter.setData(it)
-        }
-        userViewModel.isLoading.observe(requireActivity()) {
-            showLoading(it)
-        }
-        userViewModel.messageToast.observe(requireActivity()) {
-            showToast(it)
+        userViewModel.user.observe(requireActivity()) {
+            setLayout(it)
         }
     }
 
-    private fun showRecycleList() {
-        rvUser.layoutManager = LinearLayoutManager(activity)
-        listUserAdapter = ListUserAdapter()
-        rvUser.adapter = listUserAdapter
-
-        listUserAdapter.setOnItemClickCallback(object: ListUserAdapter.OnItemClickCallback {
-            override fun onItemClicked(username: String?) {
-                val intent = Intent(activity, DetailUserActivity::class.java)
-                intent.putExtra(DetailUserActivity.PUT_EXTRA, username)
-                startActivity(intent)
-            }
-        })
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
+    private fun initLayout() {
+        binding.apply {
+            Glide.with(requireActivity())
+                .load(R.drawable.placeholder)
+                .apply(RequestOptions().override(400, 400))
+                .into(imgAvatar)
+            name.text = "Set in setting"
+            username.visibility = View.INVISIBLE
+            following.visibility = View.INVISIBLE
+            followers.visibility = View.INVISIBLE
+            textView4.visibility = View.INVISIBLE
+            textView5.visibility = View.INVISIBLE
         }
     }
 
-    private fun showToast(message: String, long: Boolean = true) {
-        Toast.makeText(activity, message, if (long) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
-    }
-
-    private fun initialUsers() {
-        val users: ArrayList<UserModel> = arrayListOf(
-            UserModel(
-                0,
-                "https://avatars.githubusercontent.com/u/63949402?v=4",
-                0,
-                "",
-                "",
-                "",
-                0,
-                "reskimulud"
-            ),
-            UserModel(
-                0,
-                "https://avatars.githubusercontent.com/u/69951585?v=4",
-                0,
-                "",
-                "",
-                "",
-                0,
-                "Ikram-Maulana"
-            ),
-            UserModel(
-                0,
-                "https://avatars.githubusercontent.com/u/49898183?v=4",
-                0,
-                "",
-                "",
-                "",
-                0,
-                "fauzywijaya"
-            ),
-            UserModel(
-                0,
-                "https://avatars.githubusercontent.com/u/37388666?v=4",
-                0,
-                "",
-                "",
-                "",
-                0,
-                "drajatdani1892"
-            ),
-            UserModel(
-                0,
-                "https://avatars.githubusercontent.com/u/69128801?v=4",
-                0,
-                "",
-                "",
-                "",
-                0,
-                "Deri-Kurniawan"
-            ),
-        )
-        listUserAdapter.setData(users)
+    private fun setLayout(user: UserModel?) {
+        binding.apply {
+            Glide.with(requireActivity())
+                .load(user?.avatarUrl)
+                .placeholder(R.drawable.placeholder)
+                .apply(RequestOptions().override(400, 400))
+                .error(R.drawable.placeholder)
+                .into(imgAvatar)
+            username.text = user?.login
+            name.text = user?.name
+            followers.text = user?.followers.toString()
+            following.text = user?.following.toString()
+            username.visibility = View.VISIBLE
+            following.visibility = View.VISIBLE
+            followers.visibility = View.VISIBLE
+            textView4.visibility = View.VISIBLE
+            textView5.visibility = View.VISIBLE
+        }
     }
 }

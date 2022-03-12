@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -16,12 +15,12 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.mankart.mygithubuser.adapter.ListUserAdapter
 import com.mankart.mygithubuser.R
 import com.mankart.mygithubuser.databinding.ActivityMainBinding
-import com.mankart.mygithubuser.fragment.PreferenceFragment
 import com.mankart.mygithubuser.viewmodel.UserViewModel
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import com.mankart.mygithubuser.data.datastore.SettingPreference
 import com.mankart.mygithubuser.fragment.HomeFragment
+import com.mankart.mygithubuser.fragment.SearchFragment
 import com.mankart.mygithubuser.viewmodel.MainViewModel
 import com.mankart.mygithubuser.viewmodel.ViewModelFactory
 
@@ -65,6 +64,10 @@ class MainActivity : AppCompatActivity() {
         searchView.queryHint = resources.getString(R.string.search_hint)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
+                supportFragmentManager.commit {
+                    replace(binding.fragmentPlaceholder.id, SearchFragment(), SearchFragment::class.java.simpleName)
+                    addToBackStack(null)
+                }
                 return false
             }
 
