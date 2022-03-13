@@ -1,4 +1,4 @@
-package com.mankart.mygithubuser.fragment
+package com.mankart.mygithubuser.ui.fragment
 
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -8,10 +8,10 @@ import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
 import com.mankart.mygithubuser.R
-import com.mankart.mygithubuser.activity.dataStore
+import com.mankart.mygithubuser.ui.activity.dataStore
 import com.mankart.mygithubuser.data.datastore.SettingPreference
-import com.mankart.mygithubuser.viewmodel.MainViewModel
-import com.mankart.mygithubuser.viewmodel.ViewModelFactory
+import com.mankart.mygithubuser.data.viewmodel.MainViewModel
+import com.mankart.mygithubuser.data.viewmodel.ViewModelFactory
 
 class PreferenceFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
 

@@ -1,4 +1,4 @@
-package com.mankart.mygithubuser.activity
+package com.mankart.mygithubuser.ui.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,8 +9,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import com.mankart.mygithubuser.R
 import com.mankart.mygithubuser.data.datastore.SettingPreference
-import com.mankart.mygithubuser.viewmodel.MainViewModel
-import com.mankart.mygithubuser.viewmodel.ViewModelFactory
+import com.mankart.mygithubuser.data.viewmodel.MainViewModel
+import com.mankart.mygithubuser.data.viewmodel.ViewModelFactory
 
 class SplashScreenActivity : AppCompatActivity() {
     private lateinit var mainViewModel: MainViewModel

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@color/primaryColor"
-        tools:context=".activity.DetailUserActivity">
+        tools:context=".ui.activity.DetailUserActivity">
 
         <LinearLayout
             android:id="@+id/jumbotron"

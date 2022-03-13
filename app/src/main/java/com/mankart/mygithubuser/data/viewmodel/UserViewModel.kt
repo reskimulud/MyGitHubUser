@@ -1,10 +1,10 @@
-package com.mankart.mygithubuser.viewmodel
+package com.mankart.mygithubuser.data.viewmodel
 
 import androidx.lifecycle.*
-import com.mankart.mygithubuser.model.RepoModel
-import com.mankart.mygithubuser.model.UserModel
-import com.mankart.mygithubuser.model.UsersListModel
-import com.mankart.mygithubuser.services.ApiConfig
+import com.mankart.mygithubuser.data.model.RepoModel
+import com.mankart.mygithubuser.data.model.UserModel
+import com.mankart.mygithubuser.data.model.UsersListModel
+import com.mankart.mygithubuser.data.network.ApiConfig
 import com.mankart.mygithubuser.utils.Event
 import retrofit2.Call
 import retrofit2.Callback

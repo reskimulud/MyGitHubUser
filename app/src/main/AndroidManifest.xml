@@ -12,13 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyGitHubUser1">
         <activity
-            android:name=".activity.SettingActivity"
+            android:name="com.mankart.mygithubuser.ui.activity.SettingActivity"
             android:exported="false"
-            android:parentActivityName=".activity.MainActivity"/>
+            android:parentActivityName="com.mankart.mygithubuser.ui.activity.MainActivity"/>
         <activity
-            android:name=".activity.DetailUserActivity" />
+            android:name="com.mankart.mygithubuser.ui.activity.DetailUserActivity" />
         <activity
-            android:name=".activity.SplashScreenActivity"
+            android:name="com.mankart.mygithubuser.ui.activity.SplashScreenActivity"
             android:exported="true"
             android:theme="@style/SplashScreenStyle">
             <intent-filter>
@@ -27,7 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity" />
+        <activity android:name="com.mankart.mygithubuser.ui.activity.MainActivity" />
     </application>
 
 </manifest>

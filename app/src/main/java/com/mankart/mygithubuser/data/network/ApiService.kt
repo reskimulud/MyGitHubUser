@@ -1,9 +1,9 @@
-package com.mankart.mygithubuser.services
+package com.mankart.mygithubuser.data.network
 
 import com.mankart.mygithubuser.BuildConfig
-import com.mankart.mygithubuser.model.RepoModel
-import com.mankart.mygithubuser.model.UserModel
-import com.mankart.mygithubuser.model.UsersListModel
+import com.mankart.mygithubuser.data.model.RepoModel
+import com.mankart.mygithubuser.data.model.UserModel
+import com.mankart.mygithubuser.data.model.UsersListModel
 import retrofit2.Call
 import retrofit2.http.*
 

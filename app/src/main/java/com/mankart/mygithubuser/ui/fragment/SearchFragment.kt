@@ -1,4 +1,4 @@
-package com.mankart.mygithubuser.fragment
+package com.mankart.mygithubuser.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,69 +8,63 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mankart.mygithubuser.activity.DetailUserActivity
-import com.mankart.mygithubuser.adapter.ListUserAdapter
-import com.mankart.mygithubuser.databinding.FragmentFollowerBinding
-import com.mankart.mygithubuser.viewmodel.UserViewModel
+import androidx.recyclerview.widget.RecyclerView
+import com.mankart.mygithubuser.ui.activity.DetailUserActivity
+import com.mankart.mygithubuser.ui.activity.dataStore
+import com.mankart.mygithubuser.ui.adapter.ListUserAdapter
+import com.mankart.mygithubuser.data.datastore.SettingPreference
+import com.mankart.mygithubuser.databinding.FragmentSearchBinding
+import com.mankart.mygithubuser.data.viewmodel.MainViewModel
+import com.mankart.mygithubuser.data.viewmodel.UserViewModel
+import com.mankart.mygithubuser.data.viewmodel.ViewModelFactory
 
-
-class FollowerFragment : Fragment() {
-    private lateinit var binding: FragmentFollowerBinding
+class SearchFragment : Fragment() {
+    private lateinit var binding: FragmentSearchBinding
+    private lateinit var rvUser: RecyclerView
     private lateinit var listUserAdapter: ListUserAdapter
-    private lateinit var tab: String
     private val userViewModel: UserViewModel by activityViewModels()
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentFollowerBinding.inflate(layoutInflater)
         // Inflate the layout for this fragment
+        binding = FragmentSearchBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tab = TABS[arguments?.getInt(ARG_SECTION_NUMBER, 0)!!.toInt()]
-        val username = arguments?.getString(USERNAME)
+        rvUser = binding.rvUsers
+        rvUser.setHasFixedSize(true)
 
-        initObserver()
+        val pref = SettingPreference.getInstance(requireActivity().dataStore)
+        mainViewModel = ViewModelProvider(requireActivity(), ViewModelFactory(pref))[MainViewModel::class.java]
 
-        getUserFollow(tab, username)
         showRecycleList()
+        initObserver()
     }
 
     private fun initObserver() {
+        userViewModel.listUser.observe(requireActivity()) {
+            listUserAdapter.setData(it)
+        }
         userViewModel.isLoading.observe(requireActivity()) {
             showLoading(it)
         }
         userViewModel.messageToast.observe(requireActivity()) {
             showToast(it)
         }
-        when (tab) {
-            TABS[0] -> {
-                userViewModel.userFollower.observe(requireActivity()) {
-                    listUserAdapter.setData(it)
-                }
-            }
-            TABS[1] -> {
-                userViewModel.userFollowing.observe(requireActivity()) {
-                    listUserAdapter.setData(it)
-                }
-            }
-        }
-    }
-
-    private fun getUserFollow(tab: String, username: String?) {
-        userViewModel.getUserFollow(tab, username)
     }
 
     private fun showRecycleList() {
-        binding.rvFollow.layoutManager = LinearLayoutManager(context)
+        rvUser.layoutManager = LinearLayoutManager(activity)
         listUserAdapter = ListUserAdapter()
-        binding.rvFollow.adapter = listUserAdapter
+        rvUser.adapter = listUserAdapter
 
         listUserAdapter.setOnItemClickCallback(object: ListUserAdapter.OnItemClickCallback {
             override fun onItemClicked(username: String?) {
@@ -78,7 +72,6 @@ class FollowerFragment : Fragment() {
                 intent.putExtra(DetailUserActivity.PUT_EXTRA, username)
                 startActivity(intent)
             }
-
         })
     }
 
@@ -91,12 +84,6 @@ class FollowerFragment : Fragment() {
     }
 
     private fun showToast(message: String, long: Boolean = true) {
-        Toast.makeText(context, message, if (long) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
-    }
-
-    companion object {
-        val TABS = listOf("followers", "following")
-        const val ARG_SECTION_NUMBER ="tab_number"
-        const val USERNAME = "username"
+        Toast.makeText(activity, message, if (long) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
     }
 }

@@ -1,4 +1,4 @@
-package com.mankart.mygithubuser.adapter
+package com.mankart.mygithubuser.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.mankart.mygithubuser.R
-import com.mankart.mygithubuser.model.RepoModel
+import com.mankart.mygithubuser.data.model.RepoModel
 
 class ListRepoAdapter: RecyclerView.Adapter<ListRepoAdapter.ListViewHolder>() {
     private var listRepo = ArrayList<RepoModel>()

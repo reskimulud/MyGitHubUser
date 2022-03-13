@@ -1,8 +1,7 @@
-package com.mankart.mygithubuser.activity
+package com.mankart.mygithubuser.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
@@ -12,10 +11,10 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.mankart.mygithubuser.R
-import com.mankart.mygithubuser.adapter.FollowTabPagerAdapter
+import com.mankart.mygithubuser.ui.adapter.FollowTabPagerAdapter
 import com.mankart.mygithubuser.databinding.ActivityDetailUserBinding
-import com.mankart.mygithubuser.model.UserModel
-import com.mankart.mygithubuser.viewmodel.UserViewModel
+import com.mankart.mygithubuser.data.model.UserModel
+import com.mankart.mygithubuser.data.viewmodel.UserViewModel
 import java.text.DecimalFormat
 import kotlin.math.floor
 import kotlin.math.log10

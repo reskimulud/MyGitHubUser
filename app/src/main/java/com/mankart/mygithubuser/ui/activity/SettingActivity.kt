@@ -1,16 +1,15 @@
-package com.mankart.mygithubuser.activity
+package com.mankart.mygithubuser.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import com.mankart.mygithubuser.R
 import com.mankart.mygithubuser.data.datastore.SettingPreference
 import com.mankart.mygithubuser.databinding.ActivitySettingBinding
-import com.mankart.mygithubuser.fragment.PreferenceFragment
-import com.mankart.mygithubuser.viewmodel.MainViewModel
-import com.mankart.mygithubuser.viewmodel.ViewModelFactory
+import com.mankart.mygithubuser.ui.fragment.PreferenceFragment
+import com.mankart.mygithubuser.data.viewmodel.MainViewModel
+import com.mankart.mygithubuser.data.viewmodel.ViewModelFactory
 
 class SettingActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingBinding

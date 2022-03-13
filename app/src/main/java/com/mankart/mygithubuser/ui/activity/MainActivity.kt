@@ -1,4 +1,4 @@
-package com.mankart.mygithubuser.activity
+package com.mankart.mygithubuser.ui.activity
 
 import android.app.SearchManager
 import android.content.Context
@@ -12,17 +12,17 @@ import androidx.appcompat.widget.SearchView
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import com.mankart.mygithubuser.adapter.ListUserAdapter
+import com.mankart.mygithubuser.ui.adapter.ListUserAdapter
 import com.mankart.mygithubuser.R
 import com.mankart.mygithubuser.databinding.ActivityMainBinding
-import com.mankart.mygithubuser.viewmodel.UserViewModel
+import com.mankart.mygithubuser.data.viewmodel.UserViewModel
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import com.mankart.mygithubuser.data.datastore.SettingPreference
-import com.mankart.mygithubuser.fragment.HomeFragment
-import com.mankart.mygithubuser.fragment.SearchFragment
-import com.mankart.mygithubuser.viewmodel.MainViewModel
-import com.mankart.mygithubuser.viewmodel.ViewModelFactory
+import com.mankart.mygithubuser.ui.fragment.HomeFragment
+import com.mankart.mygithubuser.ui.fragment.SearchFragment
+import com.mankart.mygithubuser.data.viewmodel.MainViewModel
+import com.mankart.mygithubuser.data.viewmodel.ViewModelFactory
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 

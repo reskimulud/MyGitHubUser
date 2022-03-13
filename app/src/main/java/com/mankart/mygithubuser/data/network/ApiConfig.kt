@@ -1,4 +1,4 @@
-package com.mankart.mygithubuser.services
+package com.mankart.mygithubuser.data.network
 
 import com.mankart.mygithubuser.BuildConfig
 import okhttp3.OkHttpClient

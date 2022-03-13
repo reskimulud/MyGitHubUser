@@ -1,4 +1,4 @@
-package com.mankart.mygithubuser.model
+package com.mankart.mygithubuser.data.model
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

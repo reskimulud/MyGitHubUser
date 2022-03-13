@@ -1,4 +1,4 @@
-package com.mankart.mygithubuser.viewmodel
+package com.mankart.mygithubuser.data.viewmodel
 
 import androidx.lifecycle.*
 import com.mankart.mygithubuser.data.datastore.SettingPreference

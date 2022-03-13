@@ -1,4 +1,4 @@
-package com.mankart.mygithubuser.fragment
+package com.mankart.mygithubuser.ui.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,15 +13,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.mankart.mygithubuser.R
-import com.mankart.mygithubuser.activity.MainActivity
-import com.mankart.mygithubuser.activity.dataStore
-import com.mankart.mygithubuser.adapter.ListRepoAdapter
+import com.mankart.mygithubuser.ui.activity.dataStore
+import com.mankart.mygithubuser.ui.adapter.ListRepoAdapter
 import com.mankart.mygithubuser.data.datastore.SettingPreference
 import com.mankart.mygithubuser.databinding.FragmentHomeBinding
-import com.mankart.mygithubuser.viewmodel.MainViewModel
-import com.mankart.mygithubuser.viewmodel.UserViewModel
-import com.mankart.mygithubuser.viewmodel.ViewModelFactory
-import com.mankart.mygithubuser.model.UserModel
+import com.mankart.mygithubuser.data.viewmodel.MainViewModel
+import com.mankart.mygithubuser.data.viewmodel.UserViewModel
+import com.mankart.mygithubuser.data.viewmodel.ViewModelFactory
+import com.mankart.mygithubuser.data.model.UserModel
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding

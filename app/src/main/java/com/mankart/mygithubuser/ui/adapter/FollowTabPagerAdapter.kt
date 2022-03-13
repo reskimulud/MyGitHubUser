@@ -1,10 +1,10 @@
-package com.mankart.mygithubuser.adapter
+package com.mankart.mygithubuser.ui.adapter
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.mankart.mygithubuser.fragment.FollowerFragment
+import com.mankart.mygithubuser.ui.fragment.FollowerFragment
 
 class FollowTabPagerAdapter(activity: AppCompatActivity, private val username: String) : FragmentStateAdapter(activity) {
     override fun getItemCount(): Int {
