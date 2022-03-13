@@ -10,6 +10,11 @@
 
     <group android:menuCategory="container">
         <item
+            android:id="@+id/menu_fav"
+            android:title="@string/toggle_fav"
+            android:icon="@drawable/ic_fav_yes"
+            app:showAsAction="ifRoom" />
+        <item
             android:id="@+id/menu_setting"
             android:title="@string/setting"
             android:icon="@drawable/ic_settings"

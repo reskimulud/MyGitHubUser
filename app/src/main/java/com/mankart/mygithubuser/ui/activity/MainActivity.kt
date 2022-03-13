@@ -43,7 +43,9 @@ class MainActivity : AppCompatActivity() {
         val pref = SettingPreference.getInstance(dataStore)
         mainViewModel = ViewModelProvider(this, ViewModelFactory(pref))[MainViewModel::class.java]
 
-        listUserAdapter = ListUserAdapter()
+        listUserAdapter = ListUserAdapter {
+            return@ListUserAdapter
+        }
 
         homeFragment()
         initObserve()
@@ -99,6 +101,11 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.menu_setting -> {
                 val intent = Intent(this@MainActivity, SettingActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_fav -> {
+                val intent = Intent(this@MainActivity, FavoriteActivity::class.java)
                 startActivity(intent)
                 true
             }

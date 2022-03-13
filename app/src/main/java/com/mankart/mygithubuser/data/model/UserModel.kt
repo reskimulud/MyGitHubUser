@@ -29,5 +29,7 @@ data class UserModel(
 	val publicRepos: Int? = 0,
 
 	@field:SerializedName("login")
-	val login: String? = ""
+	val login: String? = "",
+
+	val isFavorite: Boolean = false
 ) : Parcelable

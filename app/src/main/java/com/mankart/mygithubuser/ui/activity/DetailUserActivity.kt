@@ -2,6 +2,7 @@ package com.mankart.mygithubuser.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
@@ -36,6 +37,12 @@ class DetailUserActivity : AppCompatActivity() {
         val username = intent.getStringExtra(PUT_EXTRA)
         userViewModel.getUserByUsername(username)
 
+        initObserve()
+
+        supportActionBar?.hide()
+    }
+
+    private fun initObserve() {
         userViewModel.user.observe(this) {
             it.getContentIfNotHandled()?.let { data ->
                 setLayout(data)
@@ -49,12 +56,16 @@ class DetailUserActivity : AppCompatActivity() {
                 }.attach()
             }
         }
-
-        supportActionBar?.hide()
+        userViewModel.isLoading.observe(this) { isLoading ->
+            if (isLoading) {
+                binding.fbFavToggle.visibility = View.INVISIBLE
+            } else {
+                binding.fbFavToggle.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun setLayout(data: UserModel) {
-//        isInvisibleCard(true)
         binding.apply {
             tvNameDetail.text = data.name
             tvUsernameDetail.text = data.login
@@ -73,25 +84,7 @@ class DetailUserActivity : AppCompatActivity() {
                 jumbotron.background = getDrawable(R.drawable.jumbotron_night)
             }
         }
-//        isInvisibleCard(false)
     }
-
-//    private fun isInvisibleCard(isInvisible: Boolean) {
-//        when (isInvisible) {
-//            true -> binding.apply {
-//                progressBar.visibility = View.VISIBLE
-//                imgName.visibility = View.INVISIBLE
-//                countRepoFollow.visibility = View.INVISIBLE
-//                companyLoc.visibility = View.INVISIBLE
-//            }
-//            else -> binding.apply {
-//                progressBar.visibility = View.GONE
-//                imgName.visibility = View.VISIBLE
-//                countRepoFollow.visibility = View.VISIBLE
-//                companyLoc.visibility = View.VISIBLE
-//            }
-//        }
-//    }
 
     private fun getDecimal(n: Int) : String {
         val suffix = charArrayOf(' ', 'k', 'M', 'B', 'T', 'P', 'E')

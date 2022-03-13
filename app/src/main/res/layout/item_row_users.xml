@@ -33,5 +33,18 @@
         app:layout_constraintVertical_bias="0.448"
         tools:text="@string/username" />
 
+    <ImageView
+        android:id="@+id/iv_fav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/toggle_fav"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.927"
+        app:layout_constraintStart_toEndOf="@+id/tv_username"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.384"
+        app:srcCompat="@drawable/ic_fav_no" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
