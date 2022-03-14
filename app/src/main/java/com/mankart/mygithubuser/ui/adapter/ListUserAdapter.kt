@@ -13,11 +13,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.mankart.mygithubuser.R
 import com.mankart.mygithubuser.data.model.UserModel
+import com.mankart.mygithubuser.data.repository.UserRepository
+import com.mankart.mygithubuser.utils.Injection
 import de.hdodenhof.circleimageview.CircleImageView
 
 class ListUserAdapter(private val onFavoriteClicked: (UserModel) -> Unit): RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
     private var listUser = ArrayList<UserModel>()
     private lateinit var onClickCallback: OnItemClickCallback
+    private lateinit var userRepository: UserRepository
 
     interface OnItemClickCallback {
         fun onItemClicked(username: String?)
@@ -31,6 +34,7 @@ class ListUserAdapter(private val onFavoriteClicked: (UserModel) -> Unit): Recyc
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val view : View = LayoutInflater.from(parent.context).inflate(R.layout.item_row_users, parent, false)
+        userRepository = Injection.provideUserRepository(parent.context)
         return ListViewHolder(view)
     }
 
@@ -45,6 +49,7 @@ class ListUserAdapter(private val onFavoriteClicked: (UserModel) -> Unit): Recyc
                 .error(R.drawable.placeholder)
                 .into(holder.imgAvatar)
             tvUsername.text = user.login
+
             val ivFav = ivFav
             if (user.isFavorite) {
                 ivFav.setImageDrawable(ContextCompat.getDrawable(ivFav.context, R.drawable.ic_fav_yes))

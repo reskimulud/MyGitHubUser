@@ -16,5 +16,5 @@ interface FavoriteUserDao {
     fun getFavUser() : LiveData<List<UserModel>>
 
     @Query("SELECT EXISTS(SELECT * FROM fav_user WHERE id = :id)")
-    fun isFavorites(id: String) : Boolean
+    fun isFavorites(id: Int) : Boolean
 }

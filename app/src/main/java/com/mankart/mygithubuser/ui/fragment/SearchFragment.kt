@@ -9,17 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mankart.mygithubuser.ui.activity.DetailUserActivity
-import com.mankart.mygithubuser.ui.activity.dataStore
 import com.mankart.mygithubuser.ui.adapter.ListUserAdapter
-import com.mankart.mygithubuser.data.datastore.SettingPreference
 import com.mankart.mygithubuser.data.model.UserModel
 import com.mankart.mygithubuser.data.viewmodel.FavUserViewModel
 import com.mankart.mygithubuser.databinding.FragmentSearchBinding
-import com.mankart.mygithubuser.data.viewmodel.MainViewModel
 import com.mankart.mygithubuser.data.viewmodel.UserViewModel
 import com.mankart.mygithubuser.data.viewmodel.ViewModelFactory
 
@@ -29,7 +25,7 @@ class SearchFragment : Fragment() {
     private lateinit var listUserAdapter: ListUserAdapter
     private lateinit var factory: ViewModelFactory
     private val favUserViewModel: FavUserViewModel by activityViewModels { factory }
-    private val userViewModel: UserViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels { factory }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,7 +50,9 @@ class SearchFragment : Fragment() {
 
     private fun initObserver() {
         userViewModel.listUser.observe(requireActivity()) {
-            listUserAdapter.setData(it as ArrayList<UserModel>)
+            it.peekContent().let { user ->
+                listUserAdapter.setData(user as ArrayList<UserModel>)
+            }
         }
         userViewModel.isLoading.observe(requireActivity()) {
             showLoading(it)

@@ -16,7 +16,7 @@ class FavUserViewModel(private val userRepository: UserRepository): ViewModel() 
         userRepository.deleteFavUser(user)
     }
 
-    fun isFavouritesUser(id: String) {
-        userRepository.isFavouritesUser(id)
+    fun isFavouritesUser(id: Int): Boolean {
+        return userRepository.isFavouritesUser(id)
     }
 }

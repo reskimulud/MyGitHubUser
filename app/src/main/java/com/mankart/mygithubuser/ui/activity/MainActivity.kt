@@ -17,6 +17,7 @@ import com.mankart.mygithubuser.R
 import com.mankart.mygithubuser.databinding.ActivityMainBinding
 import com.mankart.mygithubuser.data.viewmodel.UserViewModel
 import androidx.fragment.app.commit
+import com.mankart.mygithubuser.data.viewmodel.ViewModelFactory
 import com.mankart.mygithubuser.ui.fragment.HomeFragment
 import com.mankart.mygithubuser.ui.fragment.SearchFragment
 
@@ -26,7 +27,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var listUserAdapter: ListUserAdapter
-    private val userViewModel: UserViewModel by viewModels()
+    private lateinit var factory: ViewModelFactory
+    private val userViewModel: UserViewModel by viewModels { factory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +36,8 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        factory = ViewModelFactory.getInstance(this)
 
         listUserAdapter = ListUserAdapter {
             return@ListUserAdapter
@@ -48,10 +52,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun initObserve() {
         userViewModel.listUser.observe(this) {
-            if (it != null && it.size > 0) {
-                supportFragmentManager.commit {
-                    replace(binding.fragmentPlaceholder.id, SearchFragment(), SearchFragment::class.java.simpleName)
-                    addToBackStack(null)
+            it.getContentIfNotHandled().let { user ->
+                if (user != null && user.isNotEmpty()) {
+                    supportFragmentManager.commit {
+                        replace(binding.fragmentPlaceholder.id, SearchFragment(), SearchFragment::class.java.simpleName)
+                        addToBackStack(null)
+                    }
                 }
             }
         }

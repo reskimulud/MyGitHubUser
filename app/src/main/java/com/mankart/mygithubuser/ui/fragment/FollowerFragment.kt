@@ -15,13 +15,15 @@ import com.mankart.mygithubuser.ui.activity.DetailUserActivity
 import com.mankart.mygithubuser.ui.adapter.ListUserAdapter
 import com.mankart.mygithubuser.databinding.FragmentFollowerBinding
 import com.mankart.mygithubuser.data.viewmodel.UserViewModel
+import com.mankart.mygithubuser.data.viewmodel.ViewModelFactory
 
 
 class FollowerFragment : Fragment() {
     private lateinit var binding: FragmentFollowerBinding
     private lateinit var listUserAdapter: ListUserAdapter
     private lateinit var tab: String
-    private val userViewModel: UserViewModel by activityViewModels()
+    private lateinit var factory: ViewModelFactory
+    private val userViewModel: UserViewModel by activityViewModels { factory }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +39,8 @@ class FollowerFragment : Fragment() {
 
         tab = TABS[arguments?.getInt(ARG_SECTION_NUMBER, 0)!!.toInt()]
         val username = arguments?.getString(USERNAME)
+
+        factory = ViewModelFactory.getInstance(requireActivity())
 
         initObserver()
 

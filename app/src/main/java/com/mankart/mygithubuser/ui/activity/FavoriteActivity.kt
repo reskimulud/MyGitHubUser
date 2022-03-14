@@ -48,8 +48,6 @@ class FavoriteActivity : AppCompatActivity() {
             if (user.isFavorite) {
                 favUserViewModel.deleteFavUser(user)
             } else {
-                user.isFavorite = true
-                user.createdAt = DateUtils.getCurrentDate()
                 favUserViewModel.insertFavUser(user)
             }
         }

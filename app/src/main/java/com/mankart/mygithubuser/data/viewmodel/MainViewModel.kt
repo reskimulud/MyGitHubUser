@@ -2,26 +2,28 @@ package com.mankart.mygithubuser.data.viewmodel
 
 import androidx.lifecycle.*
 import com.mankart.mygithubuser.data.datastore.SettingPreference
+import com.mankart.mygithubuser.data.repository.UserRepository
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
-class MainViewModel(private val pref: SettingPreference): ViewModel() {
+class MainViewModel(private val userRepository: UserRepository): ViewModel() {
     fun getThemeSetting(): LiveData<Boolean> {
-        return pref.getThemeSetting().asLiveData()
+        return userRepository.getThemeSetting()
     }
 
     fun saveThemeSetting(isNightMode: Boolean) {
         viewModelScope.launch {
-            pref.saveThemeSetting(isNightMode)
+            userRepository.saveThemeSetting(isNightMode)
         }
     }
 
     fun getUsername() : LiveData<String> {
-        return pref.getUsername().asLiveData()
+        return userRepository.getUsername()
     }
 
     fun saveUsername(username: String) {
         viewModelScope.launch {
-            pref.saveUsername(username)
+            userRepository.saveUsername(username)
         }
     }
 }

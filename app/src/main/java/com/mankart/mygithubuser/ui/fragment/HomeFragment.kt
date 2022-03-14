@@ -27,7 +27,7 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var factory: ViewModelFactory
     private val mainViewModel: MainViewModel by activityViewModels { factory }
-    private val userViewModel: UserViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels { factory }
     private lateinit var rvRepo: RecyclerView
     private lateinit var listRepoAdapter: ListRepoAdapter
 

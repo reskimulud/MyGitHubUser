@@ -5,17 +5,18 @@ import com.mankart.mygithubuser.data.model.RepoModel
 import com.mankart.mygithubuser.data.model.UserModel
 import com.mankart.mygithubuser.data.model.UsersListModel
 import com.mankart.mygithubuser.data.network.ApiConfig
+import com.mankart.mygithubuser.data.repository.UserRepository
 import com.mankart.mygithubuser.utils.Event
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserViewModel: ViewModel() {
+class UserViewModel(private val userRepository: UserRepository): ViewModel() {
     private val _user = MutableLiveData<Event<UserModel>>()
     val user: LiveData<Event<UserModel>> = _user
 
-    private val _listUser = MutableLiveData<List<UserModel>>()
-    val listUser: LiveData<List<UserModel>> = _listUser
+    private val _listUser = MutableLiveData<Event<List<UserModel>>>()
+    val listUser: LiveData<Event<List<UserModel>>> = _listUser
 
     private val _userFollower = MutableLiveData<List<UserModel>>()
     val userFollower: LiveData<List<UserModel>> = _userFollower
@@ -34,7 +35,7 @@ class UserViewModel: ViewModel() {
 
     fun searchUserByQuery(query: String) {
         _isLoading.value = true
-        val client = ApiConfig.getApiService().searchUser(query)
+        val client = userRepository.searchUserByQuery(query)
         client.enqueue(object:  Callback<UsersListModel> {
             override fun onResponse(
                 call: Call<UsersListModel>,
@@ -43,8 +44,14 @@ class UserViewModel: ViewModel() {
                 _isLoading.value = false
                 if (response.isSuccessful) {
                     val responseBody = response.body()?.items
-                    if (responseBody != null && responseBody.size > 0) {
-                        _listUser.value = responseBody
+                    if (responseBody != null && responseBody.isNotEmpty()) {
+                        userRepository.appExecutors.networkIO.execute {
+                            responseBody.forEach { user ->
+                                val isFavorites = userRepository.isFavouritesUser(user.id)
+                                user.isFavorite = isFavorites
+                            }
+                            _listUser.postValue(Event(responseBody))
+                        }
                     } else {
                         _messageToast.value = "No users were found matching the query"
                     }
@@ -63,14 +70,18 @@ class UserViewModel: ViewModel() {
 
     fun getUserByUsername(username: String?) {
         _isLoading.value = true
-        val detailUser = username?.let { ApiConfig.getApiService().getUser(it) }
+        val detailUser = username?.let { userRepository.getUserByUsername(it) }
         detailUser?.enqueue(object: Callback<UserModel> {
             override fun onResponse(call: Call<UserModel>, response: Response<UserModel>) {
                 _isLoading.value = false
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
-                        _user.value = Event(responseBody)
+                        userRepository.appExecutors.networkIO.execute {
+                            val isFavorites = userRepository.isFavouritesUser(responseBody.id)
+                            responseBody.isFavorite = isFavorites
+                            _user.postValue(Event(responseBody))
+                        }
                     }
                 } else {
                     _messageToast.value = response.message()
@@ -87,7 +98,7 @@ class UserViewModel: ViewModel() {
 
     fun getUserFollow(tab: String, username: String?) {
         _isLoading.value = true
-        val dataUserFollow = username?.let { ApiConfig.getApiService().getUserFollow(username, tab, 100) }
+        val dataUserFollow = username?.let { userRepository.getUserFollow(it, tab) }
         dataUserFollow?.enqueue(object : Callback<List<UserModel>> {
             override fun onResponse(
                 call: Call<List<UserModel>>,
@@ -97,9 +108,15 @@ class UserViewModel: ViewModel() {
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
-                        when (tab) {
-                            "followers" -> _userFollower.value = responseBody
-                            "following" -> _userFollowing.value = responseBody
+                        userRepository.appExecutors.networkIO.execute {
+                            responseBody.forEach { user ->
+                                val isFavorites = userRepository.isFavouritesUser(user.id)
+                                user.isFavorite = isFavorites
+                            }
+                            when (tab) {
+                                "followers" -> _userFollower.postValue(responseBody)
+                                "following" -> _userFollowing.postValue(responseBody)
+                            }
                         }
                     }
                 } else {
@@ -116,7 +133,7 @@ class UserViewModel: ViewModel() {
 
     fun getListUserRepos(username: String?) {
         _isLoading.value = true
-        val client = username?.let { ApiConfig.getApiService().getRepos(it) }
+        val client = username?.let { userRepository.getListUserRepos(it) }
         client?.enqueue(object : Callback<List<RepoModel>> {
             override fun onResponse(
                 call: Call<List<RepoModel>>,

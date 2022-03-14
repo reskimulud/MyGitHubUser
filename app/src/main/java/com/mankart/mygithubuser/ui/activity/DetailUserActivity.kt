@@ -16,6 +16,7 @@ import com.mankart.mygithubuser.ui.adapter.FollowTabPagerAdapter
 import com.mankart.mygithubuser.databinding.ActivityDetailUserBinding
 import com.mankart.mygithubuser.data.model.UserModel
 import com.mankart.mygithubuser.data.viewmodel.UserViewModel
+import com.mankart.mygithubuser.data.viewmodel.ViewModelFactory
 import java.text.DecimalFormat
 import kotlin.math.floor
 import kotlin.math.log10
@@ -24,7 +25,8 @@ import kotlin.math.pow
 class DetailUserActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailUserBinding
-    private val userViewModel: UserViewModel by viewModels()
+    private lateinit var factory: ViewModelFactory
+    private val userViewModel: UserViewModel by viewModels { factory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +34,8 @@ class DetailUserActivity : AppCompatActivity() {
 
         binding = ActivityDetailUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        factory = ViewModelFactory.getInstance(this)
 
 //        data = intent.getParcelableExtra<UserModel>(PUT_EXTRA) as UserModel
         val username = intent.getStringExtra(PUT_EXTRA)
