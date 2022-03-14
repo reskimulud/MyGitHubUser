@@ -7,9 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.ViewModelProvider
 import com.mankart.mygithubuser.R
-import com.mankart.mygithubuser.data.datastore.SettingPreference
 import com.mankart.mygithubuser.data.viewmodel.MainViewModel
 import com.mankart.mygithubuser.data.viewmodel.ViewModelFactory
 

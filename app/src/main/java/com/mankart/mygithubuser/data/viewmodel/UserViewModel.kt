@@ -4,7 +4,6 @@ import androidx.lifecycle.*
 import com.mankart.mygithubuser.data.model.RepoModel
 import com.mankart.mygithubuser.data.model.UserModel
 import com.mankart.mygithubuser.data.model.UsersListModel
-import com.mankart.mygithubuser.data.network.ApiConfig
 import com.mankart.mygithubuser.data.repository.UserRepository
 import com.mankart.mygithubuser.utils.Event
 import retrofit2.Call

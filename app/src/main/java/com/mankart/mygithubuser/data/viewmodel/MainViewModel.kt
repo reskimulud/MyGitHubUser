@@ -1,10 +1,8 @@
 package com.mankart.mygithubuser.data.viewmodel
 
 import androidx.lifecycle.*
-import com.mankart.mygithubuser.data.datastore.SettingPreference
 import com.mankart.mygithubuser.data.repository.UserRepository
 import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
 
 class MainViewModel(private val userRepository: UserRepository): ViewModel() {
     fun getThemeSetting(): LiveData<Boolean> {

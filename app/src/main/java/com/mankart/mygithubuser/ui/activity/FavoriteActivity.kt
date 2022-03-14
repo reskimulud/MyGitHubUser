@@ -11,7 +11,6 @@ import com.mankart.mygithubuser.data.viewmodel.FavUserViewModel
 import com.mankart.mygithubuser.data.viewmodel.ViewModelFactory
 import com.mankart.mygithubuser.databinding.ActivityFavoriteBinding
 import com.mankart.mygithubuser.ui.adapter.ListUserAdapter
-import com.mankart.mygithubuser.utils.DateUtils
 
 class FavoriteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFavoriteBinding
