@@ -1,6 +1,7 @@
 package com.mankart.mygithubuser.ui.adapter
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,6 +52,7 @@ class ListUserAdapter(private val onFavoriteClicked: (UserModel) -> Unit): Recyc
             tvUsername.text = user.login
 
             val ivFav = ivFav
+
             if (user.isFavorite) {
                 ivFav.setImageDrawable(ContextCompat.getDrawable(ivFav.context, R.drawable.ic_fav_yes))
             } else {
@@ -59,6 +61,11 @@ class ListUserAdapter(private val onFavoriteClicked: (UserModel) -> Unit): Recyc
 
             ivFav.setOnClickListener {
                 onFavoriteClicked(user)
+                if (user.isFavorite) {
+                    ivFav.setImageDrawable(ContextCompat.getDrawable(ivFav.context, R.drawable.ic_fav_no))
+                } else {
+                    ivFav.setImageDrawable(ContextCompat.getDrawable(ivFav.context, R.drawable.ic_fav_yes))
+                }
             }
             itemView.setOnClickListener { this@ListUserAdapter.onClickCallback.onItemClicked(listUser[holder.adapterPosition].login) }
         }
@@ -75,21 +82,9 @@ class ListUserAdapter(private val onFavoriteClicked: (UserModel) -> Unit): Recyc
         notifyDataSetChanged()
     }
 
-    fun setData(newList: ArrayList<UserModel>) {
+    fun setData(newList: List<UserModel>) {
         listUser.clear()
         listUser.addAll(newList)
         notifyDataSetChanged()
-    }
-
-    companion object {
-        val DIFF_CALLBACK: DiffUtil.ItemCallback<UserModel> =
-            object : DiffUtil.ItemCallback<UserModel>() {
-                override fun areItemsTheSame(oldItem: UserModel, newItem: UserModel): Boolean =
-                    oldItem.isFavorite == newItem.isFavorite
-
-                @SuppressLint("DiffUtilEquals")
-                override fun areContentsTheSame(oldItem: UserModel, newItem: UserModel): Boolean =
-                    oldItem == newItem
-            }
     }
 }

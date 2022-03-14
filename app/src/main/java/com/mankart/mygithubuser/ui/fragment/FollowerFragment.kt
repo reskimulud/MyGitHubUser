@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mankart.mygithubuser.data.model.UserModel
+import com.mankart.mygithubuser.data.viewmodel.FavUserViewModel
 import com.mankart.mygithubuser.ui.activity.DetailUserActivity
 import com.mankart.mygithubuser.ui.adapter.ListUserAdapter
 import com.mankart.mygithubuser.databinding.FragmentFollowerBinding
@@ -24,6 +25,7 @@ class FollowerFragment : Fragment() {
     private lateinit var tab: String
     private lateinit var factory: ViewModelFactory
     private val userViewModel: UserViewModel by activityViewModels { factory }
+    private val favUserViewModel: FavUserViewModel by activityViewModels { factory }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,8 +80,10 @@ class FollowerFragment : Fragment() {
         listUserAdapter = ListUserAdapter { user ->
             if (user.isFavorite) {
                 Log.e("FAV", "Set to No Fav")
+                favUserViewModel.deleteFavUser(user)
             } else {
                 Log.e("FAV", "Set to Fav")
+                favUserViewModel.insertFavUser(user)
             }
         }
         binding.rvFollow.adapter = listUserAdapter

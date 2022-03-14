@@ -44,23 +44,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         homeFragment()
-        initObserve()
 
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setIcon(R.mipmap.logo)
-    }
-
-    private fun initObserve() {
-        userViewModel.listUser.observe(this) {
-            it.getContentIfNotHandled().let { user ->
-                if (user != null && user.isNotEmpty()) {
-                    supportFragmentManager.commit {
-                        replace(binding.fragmentPlaceholder.id, SearchFragment(), SearchFragment::class.java.simpleName)
-                        addToBackStack(null)
-                    }
-                }
-            }
-        }
     }
 
     private fun homeFragment() {
@@ -88,6 +74,10 @@ class MainActivity : AppCompatActivity() {
                 listUserAdapter.clearData()
                 userViewModel.searchUserByQuery(query)
                 searchView.clearFocus()
+                supportFragmentManager.commit {
+                    replace(binding.fragmentPlaceholder.id, SearchFragment(), SearchFragment::class.java.simpleName)
+                    addToBackStack(null)
+                }
                 return true
             }
         })

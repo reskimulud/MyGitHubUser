@@ -1,5 +1,6 @@
 package com.mankart.mygithubuser.ui.activity
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -15,6 +16,7 @@ import com.mankart.mygithubuser.R
 import com.mankart.mygithubuser.ui.adapter.FollowTabPagerAdapter
 import com.mankart.mygithubuser.databinding.ActivityDetailUserBinding
 import com.mankart.mygithubuser.data.model.UserModel
+import com.mankart.mygithubuser.data.viewmodel.FavUserViewModel
 import com.mankart.mygithubuser.data.viewmodel.UserViewModel
 import com.mankart.mygithubuser.data.viewmodel.ViewModelFactory
 import java.text.DecimalFormat
@@ -27,6 +29,7 @@ class DetailUserActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailUserBinding
     private lateinit var factory: ViewModelFactory
     private val userViewModel: UserViewModel by viewModels { factory }
+    private val favUserViewModel: FavUserViewModel by viewModels { factory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +40,6 @@ class DetailUserActivity : AppCompatActivity() {
 
         factory = ViewModelFactory.getInstance(this)
 
-//        data = intent.getParcelableExtra<UserModel>(PUT_EXTRA) as UserModel
         val username = intent.getStringExtra(PUT_EXTRA)
         userViewModel.getUserByUsername(username)
 
@@ -47,8 +49,8 @@ class DetailUserActivity : AppCompatActivity() {
     }
 
     private fun initObserve() {
-        userViewModel.user.observe(this) {
-            it.getContentIfNotHandled()?.let { data ->
+        userViewModel.user.observe(this) { user ->
+            user.getContentIfNotHandled()?.let { data ->
                 setLayout(data)
 
                 val followTabPagerAdapter = data.login?.let { FollowTabPagerAdapter(this, it) }
@@ -69,6 +71,7 @@ class DetailUserActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun setLayout(data: UserModel) {
         binding.apply {
             tvNameDetail.text = data.name
@@ -86,6 +89,21 @@ class DetailUserActivity : AppCompatActivity() {
             tvLocation.text = data.location
             if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
                 jumbotron.background = getDrawable(R.drawable.jumbotron_night)
+            }
+            if (data.isFavorite) {
+                fbFavToggle.setImageResource(R.drawable.ic_fav_yes)
+            } else {
+                fbFavToggle.setImageResource(R.drawable.ic_fav_no)
+            }
+
+            fbFavToggle.setOnClickListener {
+                if (data.isFavorite) {
+                    favUserViewModel.deleteFavUser(data)
+                    fbFavToggle.setImageResource(R.drawable.ic_fav_no)
+                } else {
+                    favUserViewModel.insertFavUser(data)
+                    fbFavToggle.setImageResource(R.drawable.ic_fav_yes)
+                }
             }
         }
     }

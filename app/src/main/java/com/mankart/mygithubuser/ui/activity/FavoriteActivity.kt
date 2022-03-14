@@ -1,5 +1,6 @@
 package com.mankart.mygithubuser.ui.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -52,5 +53,14 @@ class FavoriteActivity : AppCompatActivity() {
             }
         }
         rvUser.adapter = listUserAdapter
+
+        listUserAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
+            override fun onItemClicked(username: String?) {
+                val intent = Intent(this@FavoriteActivity, DetailUserActivity::class.java)
+                intent.putExtra(DetailUserActivity.PUT_EXTRA, username)
+                startActivity(intent)
+            }
+
+        })
     }
 }
