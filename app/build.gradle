@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-parcelize'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -16,7 +17,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "AUTH_TOKEN", '"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"')
+        buildConfigField("String", "AUTH_TOKEN", '"your_token"')
     }
 
     buildTypes {
@@ -61,4 +62,7 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:1.4.1"
     implementation "androidx.datastore:datastore-preferences:1.0.0"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.1"
+    implementation 'androidx.core:core-splashscreen:1.0.0-beta01'
+    implementation 'androidx.room:room-runtime:2.4.2'
+    kapt 'androidx.room:room-compiler:2.4.2'
 }
