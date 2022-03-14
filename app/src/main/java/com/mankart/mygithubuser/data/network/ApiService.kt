@@ -26,11 +26,11 @@ interface ApiService {
         @Path("username") username: String,
         @Path("follow") follow: String,
         @Query("per_page") perPage: Int
-    ) : Call<ArrayList<UserModel>>
+    ) : Call<List<UserModel>>
 
     @Headers("Authorization: token ${BuildConfig.AUTH_TOKEN}")
     @GET("users/{username}/repos")
     fun getRepos(
         @Path("username") username: String
-    ) : Call<ArrayList<RepoModel>>
+    ) : Call<List<RepoModel>>
 }

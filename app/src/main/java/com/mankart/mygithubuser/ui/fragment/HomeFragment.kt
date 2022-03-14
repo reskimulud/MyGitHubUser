@@ -16,6 +16,7 @@ import com.mankart.mygithubuser.R
 import com.mankart.mygithubuser.ui.activity.dataStore
 import com.mankart.mygithubuser.ui.adapter.ListRepoAdapter
 import com.mankart.mygithubuser.data.datastore.SettingPreference
+import com.mankart.mygithubuser.data.model.RepoModel
 import com.mankart.mygithubuser.databinding.FragmentHomeBinding
 import com.mankart.mygithubuser.data.viewmodel.MainViewModel
 import com.mankart.mygithubuser.data.viewmodel.UserViewModel
@@ -24,7 +25,8 @@ import com.mankart.mygithubuser.data.model.UserModel
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var mainViewModel: MainViewModel
+    private lateinit var factory: ViewModelFactory
+    private val mainViewModel: MainViewModel by activityViewModels { factory }
     private val userViewModel: UserViewModel by activityViewModels()
     private lateinit var rvRepo: RecyclerView
     private lateinit var listRepoAdapter: ListRepoAdapter
@@ -44,8 +46,7 @@ class HomeFragment : Fragment() {
         rvRepo = binding.rvRepo
         rvRepo.setHasFixedSize(true)
 
-        val pref = SettingPreference.getInstance(requireActivity().dataStore)
-        mainViewModel = ViewModelProvider(requireActivity(), ViewModelFactory(pref))[MainViewModel::class.java]
+        factory = ViewModelFactory.getInstance(requireActivity())
 
         initLayout()
         initObserver()
@@ -72,7 +73,7 @@ class HomeFragment : Fragment() {
 
         userViewModel.listRepo.observe(requireActivity()) {
             it.peekContent().let { repo ->
-                listRepoAdapter.setData(repo)
+                listRepoAdapter.setData(repo as ArrayList<RepoModel>)
             }
         }
 

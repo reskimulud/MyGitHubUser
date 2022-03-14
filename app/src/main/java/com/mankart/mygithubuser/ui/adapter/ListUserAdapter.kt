@@ -1,5 +1,6 @@
 package com.mankart.mygithubuser.ui.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -73,5 +74,17 @@ class ListUserAdapter(private val onFavoriteClicked: (UserModel) -> Unit): Recyc
         listUser.clear()
         listUser.addAll(newList)
         notifyDataSetChanged()
+    }
+
+    companion object {
+        val DIFF_CALLBACK: DiffUtil.ItemCallback<UserModel> =
+            object : DiffUtil.ItemCallback<UserModel>() {
+                override fun areItemsTheSame(oldItem: UserModel, newItem: UserModel): Boolean =
+                    oldItem.isFavorite == newItem.isFavorite
+
+                @SuppressLint("DiffUtilEquals")
+                override fun areContentsTheSame(oldItem: UserModel, newItem: UserModel): Boolean =
+                    oldItem == newItem
+            }
     }
 }

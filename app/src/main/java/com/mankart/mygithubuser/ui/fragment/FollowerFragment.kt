@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mankart.mygithubuser.data.model.UserModel
 import com.mankart.mygithubuser.ui.activity.DetailUserActivity
 import com.mankart.mygithubuser.ui.adapter.ListUserAdapter
 import com.mankart.mygithubuser.databinding.FragmentFollowerBinding
@@ -53,12 +54,12 @@ class FollowerFragment : Fragment() {
         when (tab) {
             TABS[0] -> {
                 userViewModel.userFollower.observe(requireActivity()) {
-                    listUserAdapter.setData(it)
+                    listUserAdapter.setData(it as ArrayList<UserModel>)
                 }
             }
             TABS[1] -> {
                 userViewModel.userFollowing.observe(requireActivity()) {
-                    listUserAdapter.setData(it)
+                    listUserAdapter.setData(it as ArrayList<UserModel>)
                 }
             }
         }
@@ -72,9 +73,9 @@ class FollowerFragment : Fragment() {
         binding.rvFollow.layoutManager = LinearLayoutManager(context)
         listUserAdapter = ListUserAdapter { user ->
             if (user.isFavorite) {
-                Log.e("FAV", "Set to Fav")
-            } else {
                 Log.e("FAV", "Set to No Fav")
+            } else {
+                Log.e("FAV", "Set to Fav")
             }
         }
         binding.rvFollow.adapter = listUserAdapter

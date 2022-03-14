@@ -14,14 +14,14 @@ class UserViewModel: ViewModel() {
     private val _user = MutableLiveData<Event<UserModel>>()
     val user: LiveData<Event<UserModel>> = _user
 
-    private val _listUser = MutableLiveData<ArrayList<UserModel>>()
-    val listUser: LiveData<ArrayList<UserModel>> = _listUser
+    private val _listUser = MutableLiveData<List<UserModel>>()
+    val listUser: LiveData<List<UserModel>> = _listUser
 
-    private val _userFollower = MutableLiveData<ArrayList<UserModel>>()
-    val userFollower: LiveData<ArrayList<UserModel>> = _userFollower
+    private val _userFollower = MutableLiveData<List<UserModel>>()
+    val userFollower: LiveData<List<UserModel>> = _userFollower
 
-    private val _userFollowing = MutableLiveData<ArrayList<UserModel>>()
-    val userFollowing: LiveData<ArrayList<UserModel>> = _userFollowing
+    private val _userFollowing = MutableLiveData<List<UserModel>>()
+    val userFollowing: LiveData<List<UserModel>> = _userFollowing
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -29,8 +29,8 @@ class UserViewModel: ViewModel() {
     private val _messageToast = MutableLiveData<String>()
     val messageToast: LiveData<String> = _messageToast
 
-    private val _listRepo = MutableLiveData<Event<ArrayList<RepoModel>>>()
-    val listRepo: LiveData<Event<ArrayList<RepoModel>>> = _listRepo
+    private val _listRepo = MutableLiveData<Event<List<RepoModel>>>()
+    val listRepo: LiveData<Event<List<RepoModel>>> = _listRepo
 
     fun searchUserByQuery(query: String) {
         _isLoading.value = true
@@ -61,10 +61,6 @@ class UserViewModel: ViewModel() {
         })
     }
 
-    fun clearListUser() {
-        _listUser.value?.clear()
-    }
-
     fun getUserByUsername(username: String?) {
         _isLoading.value = true
         val detailUser = username?.let { ApiConfig.getApiService().getUser(it) }
@@ -92,10 +88,10 @@ class UserViewModel: ViewModel() {
     fun getUserFollow(tab: String, username: String?) {
         _isLoading.value = true
         val dataUserFollow = username?.let { ApiConfig.getApiService().getUserFollow(username, tab, 100) }
-        dataUserFollow?.enqueue(object : Callback<ArrayList<UserModel>> {
+        dataUserFollow?.enqueue(object : Callback<List<UserModel>> {
             override fun onResponse(
-                call: Call<ArrayList<UserModel>>,
-                response: Response<ArrayList<UserModel>>
+                call: Call<List<UserModel>>,
+                response: Response<List<UserModel>>
             ) {
                 _isLoading.value = false
                 if (response.isSuccessful) {
@@ -111,7 +107,7 @@ class UserViewModel: ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<ArrayList<UserModel>>, t: Throwable) {
+            override fun onFailure(call: Call<List<UserModel>>, t: Throwable) {
                 _isLoading.value = false
                 _messageToast.value = t.message.toString()
             }
@@ -121,10 +117,10 @@ class UserViewModel: ViewModel() {
     fun getListUserRepos(username: String?) {
         _isLoading.value = true
         val client = username?.let { ApiConfig.getApiService().getRepos(it) }
-        client?.enqueue(object : Callback<ArrayList<RepoModel>> {
+        client?.enqueue(object : Callback<List<RepoModel>> {
             override fun onResponse(
-                call: Call<ArrayList<RepoModel>>,
-                response: Response<ArrayList<RepoModel>>
+                call: Call<List<RepoModel>>,
+                response: Response<List<RepoModel>>
             ) {
                 if (response.isSuccessful) {
                     _isLoading.value = false
@@ -137,7 +133,7 @@ class UserViewModel: ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<ArrayList<RepoModel>>, t: Throwable) {
+            override fun onFailure(call: Call<List<RepoModel>>, t: Throwable) {
                 _isLoading.value = false
                 _messageToast.value = t.message.toString()
             }

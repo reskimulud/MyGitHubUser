@@ -16,6 +16,8 @@ import com.mankart.mygithubuser.ui.activity.DetailUserActivity
 import com.mankart.mygithubuser.ui.activity.dataStore
 import com.mankart.mygithubuser.ui.adapter.ListUserAdapter
 import com.mankart.mygithubuser.data.datastore.SettingPreference
+import com.mankart.mygithubuser.data.model.UserModel
+import com.mankart.mygithubuser.data.viewmodel.FavUserViewModel
 import com.mankart.mygithubuser.databinding.FragmentSearchBinding
 import com.mankart.mygithubuser.data.viewmodel.MainViewModel
 import com.mankart.mygithubuser.data.viewmodel.UserViewModel
@@ -25,8 +27,9 @@ class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
     private lateinit var rvUser: RecyclerView
     private lateinit var listUserAdapter: ListUserAdapter
+    private lateinit var factory: ViewModelFactory
+    private val favUserViewModel: FavUserViewModel by activityViewModels { factory }
     private val userViewModel: UserViewModel by activityViewModels()
-    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,11 +43,10 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        factory = ViewModelFactory.getInstance(requireActivity())
+
         rvUser = binding.rvUsers
         rvUser.setHasFixedSize(true)
-
-        val pref = SettingPreference.getInstance(requireActivity().dataStore)
-        mainViewModel = ViewModelProvider(requireActivity(), ViewModelFactory(pref))[MainViewModel::class.java]
 
         showRecycleList()
         initObserver()
@@ -52,7 +54,7 @@ class SearchFragment : Fragment() {
 
     private fun initObserver() {
         userViewModel.listUser.observe(requireActivity()) {
-            listUserAdapter.setData(it)
+            listUserAdapter.setData(it as ArrayList<UserModel>)
         }
         userViewModel.isLoading.observe(requireActivity()) {
             showLoading(it)
@@ -66,9 +68,11 @@ class SearchFragment : Fragment() {
         rvUser.layoutManager = LinearLayoutManager(activity)
         listUserAdapter = ListUserAdapter { user ->
             if (user.isFavorite) {
-                Log.e("FAV", "Set to Fav")
-            } else {
                 Log.e("FAV", "Set to No Fav")
+                favUserViewModel.deleteFavUser(user)
+            } else {
+                Log.e("FAV", "Set to Fav")
+                favUserViewModel.insertFavUser(user)
             }
         }
         rvUser.adapter = listUserAdapter

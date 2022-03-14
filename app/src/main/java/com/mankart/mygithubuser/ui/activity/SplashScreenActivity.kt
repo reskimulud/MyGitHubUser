@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import com.mankart.mygithubuser.R
@@ -13,14 +14,15 @@ import com.mankart.mygithubuser.data.viewmodel.MainViewModel
 import com.mankart.mygithubuser.data.viewmodel.ViewModelFactory
 
 class SplashScreenActivity : AppCompatActivity() {
-    private lateinit var mainViewModel: MainViewModel
+    private lateinit var factory: ViewModelFactory
+    private val mainViewModel: MainViewModel by viewModels { factory }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
 
         val delayMillis = 2000L
-        val pref = SettingPreference.getInstance(dataStore)
-        mainViewModel = ViewModelProvider(this, ViewModelFactory(pref))[MainViewModel::class.java]
+        factory = ViewModelFactory.getInstance(this)
 
         mainViewModel.getThemeSetting().observe(this) { isNightMode: Boolean ->
             if (isNightMode) {

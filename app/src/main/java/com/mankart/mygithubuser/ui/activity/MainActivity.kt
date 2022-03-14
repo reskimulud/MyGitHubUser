@@ -17,12 +17,8 @@ import com.mankart.mygithubuser.R
 import com.mankart.mygithubuser.databinding.ActivityMainBinding
 import com.mankart.mygithubuser.data.viewmodel.UserViewModel
 import androidx.fragment.app.commit
-import androidx.lifecycle.ViewModelProvider
-import com.mankart.mygithubuser.data.datastore.SettingPreference
 import com.mankart.mygithubuser.ui.fragment.HomeFragment
 import com.mankart.mygithubuser.ui.fragment.SearchFragment
-import com.mankart.mygithubuser.data.viewmodel.MainViewModel
-import com.mankart.mygithubuser.data.viewmodel.ViewModelFactory
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -31,7 +27,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var listUserAdapter: ListUserAdapter
     private val userViewModel: UserViewModel by viewModels()
-    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,9 +34,6 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val pref = SettingPreference.getInstance(dataStore)
-        mainViewModel = ViewModelProvider(this, ViewModelFactory(pref))[MainViewModel::class.java]
 
         listUserAdapter = ListUserAdapter {
             return@ListUserAdapter

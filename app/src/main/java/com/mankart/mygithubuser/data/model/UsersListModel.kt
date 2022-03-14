@@ -7,5 +7,5 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class UsersListModel(
 	@field:SerializedName("items")
-	val items: ArrayList<UserModel>
+	val items: List<UserModel>
 ) : Parcelable

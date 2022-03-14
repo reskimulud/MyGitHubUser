@@ -3,6 +3,7 @@ package com.mankart.mygithubuser.ui.fragment
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceFragmentCompat
@@ -21,13 +22,13 @@ class PreferenceFragment : PreferenceFragmentCompat(), SharedPreferences.OnShare
     private lateinit var usernamePreference: EditTextPreference
     private lateinit var nightModePreference: SwitchPreference
 
-    private lateinit var mainViewModel: MainViewModel
+    private lateinit var factory: ViewModelFactory
+    private val mainViewModel: MainViewModel by activityViewModels { factory }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.preferences)
 
-        val pref = SettingPreference.getInstance(requireActivity().dataStore)
-        mainViewModel = ViewModelProvider(requireActivity(), ViewModelFactory(pref))[MainViewModel::class.java]
+        factory = ViewModelFactory.getInstance(requireActivity())
 
         init()
         initObserver()
