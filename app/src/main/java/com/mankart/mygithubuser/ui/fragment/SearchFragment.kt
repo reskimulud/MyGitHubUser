@@ -64,15 +64,7 @@ class SearchFragment : Fragment() {
 
     private fun showRecycleList() {
         rvUser.layoutManager = LinearLayoutManager(activity)
-        listUserAdapter = ListUserAdapter { user ->
-            if (user.isFavorite) {
-                Log.e("FAV", "Set to No Fav")
-                favUserViewModel.deleteFavUser(user)
-            } else {
-                Log.e("FAV", "Set to Fav")
-                favUserViewModel.insertFavUser(user)
-            }
-        }
+        listUserAdapter = ListUserAdapter()
         rvUser.adapter = listUserAdapter
 
         listUserAdapter.setOnItemClickCallback(object: ListUserAdapter.OnItemClickCallback {

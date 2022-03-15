@@ -1,14 +1,11 @@
 package com.mankart.mygithubuser.ui.adapter
 
-import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -18,7 +15,7 @@ import com.mankart.mygithubuser.data.repository.UserRepository
 import com.mankart.mygithubuser.utils.Injection
 import de.hdodenhof.circleimageview.CircleImageView
 
-class ListUserAdapter(private val onFavoriteClicked: (UserModel) -> Unit): RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
+class ListUserAdapter(private val onFavoriteClicked: ((UserModel) -> Unit)? = null): RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
     private var listUser = ArrayList<UserModel>()
     private lateinit var onClickCallback: OnItemClickCallback
     private lateinit var userRepository: UserRepository
@@ -51,20 +48,18 @@ class ListUserAdapter(private val onFavoriteClicked: (UserModel) -> Unit): Recyc
                 .into(holder.imgAvatar)
             tvUsername.text = user.login
 
-            val ivFav = ivFav
+            if (onFavoriteClicked != null) {
+                val ivFav = ivFav
+                ivFav.visibility = View.VISIBLE
 
-            if (user.isFavorite) {
-                ivFav.setImageDrawable(ContextCompat.getDrawable(ivFav.context, R.drawable.ic_fav_yes))
-            } else {
-                ivFav.setImageDrawable(ContextCompat.getDrawable(ivFav.context, R.drawable.ic_fav_no))
-            }
-
-            ivFav.setOnClickListener {
-                onFavoriteClicked(user)
                 if (user.isFavorite) {
-                    ivFav.setImageDrawable(ContextCompat.getDrawable(ivFav.context, R.drawable.ic_fav_no))
-                } else {
                     ivFav.setImageDrawable(ContextCompat.getDrawable(ivFav.context, R.drawable.ic_fav_yes))
+                } else {
+                    ivFav.setImageDrawable(ContextCompat.getDrawable(ivFav.context, R.drawable.ic_fav_no))
+                }
+
+                ivFav.setOnClickListener {
+                    onFavoriteClicked?.let { clicked -> clicked(user) }
                 }
             }
             itemView.setOnClickListener { this@ListUserAdapter.onClickCallback.onItemClicked(listUser[holder.adapterPosition].login) }

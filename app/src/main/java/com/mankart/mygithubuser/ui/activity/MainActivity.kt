@@ -39,9 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         factory = ViewModelFactory.getInstance(this)
 
-        listUserAdapter = ListUserAdapter {
-            return@ListUserAdapter
-        }
+        listUserAdapter = ListUserAdapter()
 
         homeFragment()
 
